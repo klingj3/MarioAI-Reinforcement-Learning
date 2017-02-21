@@ -99,7 +99,7 @@ public final class Main {
         float bestFitness = 0;
         float secondBest = 0;
         //final String argsString = "-vis off -ld 25 -ag ch.idsia.agents.controllers.ScaredShooty";
-        final String argsString = "-vis off -fps 100 -tl 35 -ld 0 -ag ch.idsia.agents.controllers.jk";
+        final String argsString = "-vis off -fps 100 -tl 20 -ld 0 -ag ch.idsia.agents.controllers.jk";
         final CmdLineOptions cmdLineOptions = new CmdLineOptions(argsString);
 //        final Environment environment = new MarioEnvironment();
         Agent mutatingAgent = new jk(parentA);
@@ -113,11 +113,11 @@ public final class Main {
         byte[] tempCrossover;
         Random r2 = new Random();
 
-        int percentMutate = 20;
-        int genSize = 25;
+        int mutateLevel = 15; //Out of 1000
+        int genSize = 50;
         float value = 0;
-        int generations = 15;
-        int numSeeds = 20;
+        int generations = 10;
+        int numSeeds = 40;
 
         for (int i = 0; i < generations; ++i) {
             cmdLineOptions.setVisualization(false);
@@ -128,7 +128,7 @@ public final class Main {
             crossover = breed(parentA, parentB, value);
             for (int j = 0; j < genSize; j++) {
                 value = 0;
-                tempCrossover = mutate(crossover, percentMutate);
+                tempCrossover = mutate(crossover, mutateLevel);
                 cmdLineOptions.setVisualization(j%(genSize/-1)==0);
                 mutatingAgent = new jk(tempCrossover);
                 for (int k = 0; k < numSeeds; k++) {

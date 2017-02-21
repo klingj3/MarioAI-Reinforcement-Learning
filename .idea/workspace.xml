@@ -16,11 +16,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ch/idsia/scenarios/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="388">
-              <caret line="116" column="24" lean-forward="true" selection-start-line="116" selection-start-column="24" selection-end-line="116" selection-end-column="24" />
+            <state relative-caret-position="184">
+              <caret line="101" column="59" lean-forward="false" selection-start-line="101" selection-start-column="59" selection-end-line="101" selection-end-column="59" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -28,11 +28,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="jk.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="jk.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ch/idsia/agents/controllers/jk.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="406">
-              <caret line="55" column="10" lean-forward="false" selection-start-line="55" selection-start-column="10" selection-end-line="55" selection-end-column="10" />
+            <state relative-caret-position="272">
+              <caret line="44" column="0" lean-forward="false" selection-start-line="44" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -44,7 +44,7 @@
         <entry file="file://$PROJECT_DIR$/src/ch/idsia/tools/EvaluationInfo.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="238">
-              <caret line="78" column="14" lean-forward="false" selection-start-line="78" selection-start-column="14" selection-end-line="78" selection-end-column="14" />
+              <caret line="78" column="12" lean-forward="false" selection-start-line="78" selection-start-column="12" selection-end-line="78" selection-end-column="12" />
               <folding />
             </state>
           </provider>
@@ -307,17 +307,16 @@
         <option value="$PROJECT_DIR$/src/ch/idsia/agents/controllers/ForwardJumpingAgent.java" />
         <option value="$PROJECT_DIR$/src/ch/idsia/agents/Agent.java" />
         <option value="$PROJECT_DIR$/src/ch/idsia/benchmark/tasks/BasicTask.java" />
-        <option value="$PROJECT_DIR$/src/ch/idsia/scenarios/Main.java" />
-        <option value="$PROJECT_DIR$/src/ch/idsia/tools/EvaluationInfo.java" />
         <option value="$PROJECT_DIR$/src/ch/idsia/agents/controllers/jk.java" />
+        <option value="$PROJECT_DIR$/src/ch/idsia/tools/EvaluationInfo.java" />
+        <option value="$PROJECT_DIR$/src/ch/idsia/scenarios/Main.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1936" />
-    <option name="height" value="1056" />
+    <option name="x" value="-7" />
+    <option name="width" value="974" />
+    <option name="height" value="1047" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -770,7 +769,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-7" y="0" width="974" height="1047" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -782,13 +781,13 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21881607" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22091782" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32977587" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1609375" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32254696" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1414,10 +1413,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/idsia/scenarios/Main.java">
+    <entry file="file://$PROJECT_DIR$/src/ch/idsia/agents/controllers/jk.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="388">
-          <caret line="116" column="24" lean-forward="true" selection-start-line="116" selection-start-column="24" selection-end-line="116" selection-end-column="24" />
+        <state relative-caret-position="272">
+          <caret line="44" column="0" lean-forward="false" selection-start-line="44" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1427,15 +1426,15 @@
     <entry file="file://$PROJECT_DIR$/src/ch/idsia/tools/EvaluationInfo.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
-          <caret line="78" column="14" lean-forward="false" selection-start-line="78" selection-start-column="14" selection-end-line="78" selection-end-column="14" />
+          <caret line="78" column="12" lean-forward="false" selection-start-line="78" selection-start-column="12" selection-end-line="78" selection-end-column="12" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/idsia/agents/controllers/jk.java">
+    <entry file="file://$PROJECT_DIR$/src/ch/idsia/scenarios/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="406">
-          <caret line="55" column="10" lean-forward="false" selection-start-line="55" selection-start-column="10" selection-end-line="55" selection-end-column="10" />
+        <state relative-caret-position="184">
+          <caret line="101" column="59" lean-forward="false" selection-start-line="101" selection-start-column="59" selection-end-line="101" selection-end-column="59" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

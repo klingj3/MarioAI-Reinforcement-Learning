@@ -76,7 +76,7 @@ public float computeBasicFitness()
 public float computeWeightedFitness(SystemOfValues sov)
 {
     return
-            2*distancePassedPhys * sov.distance +
+            distancePassedPhys * sov.distance +
                     flowersDevoured * sov.flowerFire +
                     marioStatus * sov.win +
                     marioMode * sov.mode +
