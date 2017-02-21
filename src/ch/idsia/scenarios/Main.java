@@ -65,7 +65,7 @@ public final class Main {
     }
 
     public static byte[] fileToByte(String filename) {
-        byte[] ret = new byte[3000];
+        byte[] ret = new byte[1440];
         try {
             int i = 0;
             Scanner scanner = new Scanner(new File(filename));
@@ -87,7 +87,7 @@ public final class Main {
             parentA = fileToByte("parentA.txt");
             parentB = fileToByte("parentB.txt");
         } else {
-            int len = 3000;
+            int len = 1440;
             parentA = new byte[len];
             parentB = new byte[len];
             for (int i = 0; i < args.length; i++) {
@@ -113,11 +113,11 @@ public final class Main {
         byte[] tempCrossover;
         Random r2 = new Random();
 
-        int mutateLevel = 15; //Out of 1000
+        int mutateLevel = 45; //Out of 1000
         int genSize = 50;
         float value = 0;
-        int generations = 10;
-        int numSeeds = 40;
+        int generations = 30;
+        int numSeeds = 25;
 
         for (int i = 0; i < generations; ++i) {
             cmdLineOptions.setVisualization(false);

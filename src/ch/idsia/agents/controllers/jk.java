@@ -55,10 +55,11 @@ public class jk extends BasicMarioAIAgent implements Agent
 		}
 		//printSceneCodes(scene);
 		int gene = 0;
-		int width = 5;
-		int geneSize = 2*width*allBlockTypes.length*nb;
-		for (int i = 11-width; i < 11+width; ++i){
-			for (int j = 11-width; j < 11+width; ++j){
+		int horWidth = 4;
+		int verWidth = 3;
+		int geneSize = 2*verWidth*2*horWidth*allBlockTypes.length*nb;
+		for (int i = 11-horWidth; i < 11+horWidth; ++i){
+			for (int j = 9-(verWidth); j < 9+(verWidth); ++j){
 				for (int k = 0; k < allBlockTypes.length; ++k){
 					for (int l = 0; l < nb; ++l){
 						action[l] = action[l] || (genes[gene++] == 1 && scene[i][j] == allBlockTypes[k]);
