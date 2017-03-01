@@ -20,37 +20,19 @@ import java.util.Scanner;
  * Package: ch.idsia.scenarios
  */
 public final class Main {
-    public static byte[] breed(byte[] a, byte[] b, float value) {
-        byte[] ret = new byte[a.length];
-        int percentCrossover = 70;
+    public static byte[] breed(byte[] a, byte[] b, int percentCrossover, int percentMutate) {
+        //Crossover
+        byte[] ret = a.clone();
         Random r = new Random();
-        ret = new byte[a.length];
-        for (int i = 0; i < a.length; i++) {
-            if (r.nextInt(10000) < percentCrossover) {
-                ret[i] = b[i];
-            } else
-                ret[i] = a[i];
+        for (int i = 0; i < percentCrossover; i++) {
+            int crossPos = r.nextInt(ret.length);
+            ret[crossPos] = b[crossPos];
         }
-        return ret;
-    }
-
-    public static byte[] mutate(byte[] a, int percentMutate) {
-        byte[] ret = new byte[a.length];
-        Random r = new Random();
-        for (int i = 0; i < a.length; i++) {
-            ret[i] = a[i];
-            if (r.nextInt(10000) < percentMutate) {
-                ret[i] = (byte) Math.abs(((int) a[i] - 1));
-            }
+        //Mutate
+        for (int i = 0; i < percentMutate; i++) {
+            int mutPos = r.nextInt(ret.length);
+            ret[mutPos] = (byte)Math.abs(ret[mutPos] - 1);
         }
-        return ret;
-    }
-
-    public static byte[] flipOneByte(byte[] a) {
-        byte[] ret = new byte[a.length];
-        Random r = new Random();
-        int randInt = r.nextInt(a.length);
-        ret[randInt] = (byte) Math.abs(((int) a[randInt] - 1));
         return ret;
     }
 
@@ -86,112 +68,128 @@ public final class Main {
         return ret;
     }
 
+    public static byte[] randomParent(byte[][] parents){
+        return parents[new Random().nextInt(parents.length)];
+    }
+
+    public static float average(float[] scores){
+        float ret = 0;
+        for (int i = 0; i < scores.length; i++){
+            ret += scores[i];
+        }
+        return ret/scores.length;
+    }
+
     public static void main(String[] args) {
-        boolean genesGiven = true;
+        boolean genesGiven = false;
+        boolean elitism = true;
+
         byte[] parentA;
         byte[] parentB;
+        int len = 540;
 
         if (genesGiven) {
             parentA = fileToByte("parentA.txt");
             parentB = fileToByte("parentB.txt");
         } else {
-            int len = 540;
             parentA = new byte[len];
             parentB = new byte[len];
             for (int i = 0; i < len; i++) {
                 parentA[i] = 0;
-                parentB[i] = 0;
+                parentB[i] = 1;
             }
         }
-        float prevFitness = 0;
-        float bestFitness = 0;
-        float secondBest = 0;
 
-        int generations = 20;
-        int genSize = 100;
+        int generations = 500;
+        int c = 100;
+        int p = 20;
         Random r2 = new Random();
 
+
+        int mutateLevel = 20; //Out of 10000
+        int crossoverLevel = 10;
+        byte[][] parents = new byte[p][len];
+        float[] scores = new float[p];
+        for (int i = 0; i < p; i++){
+            scores[i] = (float)0;
+        }
+        byte[][] children = new byte[c][len];
+
+        //Creates the innitial parents
+        for (int i = 0; i < p; i++){
+            children[i] = breed(parentA, parentB, crossoverLevel, mutateLevel);
+        }
+
+        //Establishes seeds.
         int numSeeds = 1;
         int[] seeds = new int[numSeeds];
         for (int i = 0; i < numSeeds; i++){
             seeds[i] = i;
         }
 
-
-        //final String argsString = "-vis off -ld 25 -ag ch.idsia.agents.controllers.ScaredShooty";
-        final String argsString = "-vis on -fps 100 -tl 85 -ld 0 -ag ch.idsia.agents.controllers.jk";
+        //Establishing junk.
+        final String argsString = "-vis on -fps 100 -tl 100 -ld 0 -ag ch.idsia.agents.controllers.jk";
         final CmdLineOptions cmdLineOptions = new CmdLineOptions(argsString);
-//        final Environment environment = new MarioEnvironment();
-        Agent mutatingAgent = new jk(parentA);
-//        final Agent agent = cmdLineOptions.getAgent();
-//        final Agent a = AgentsPool.load("ch.idsia.controllers.agents.controllers.ForwardJumpingAgent");
         final BasicTask basicTask = new BasicTask(cmdLineOptions);
-        int totalCount = 1;
-        float average = 0;
         final MarioCustomSystemOfValues sov = new MarioCustomSystemOfValues();
-        byte[] crossover;
-        byte[] tempCrossover;
-
 
         int tempMutate;
-        int mutateLevel = 20; //Out of 10000
         float value = 0;
 
-        float prevBest = 0;
-        int immobileCounter = 0;
         int timelimit = 5;
 
         for (int i = 0; i < generations; ++i) {
-            if (i < 12 && !genesGiven)
-                mutateLevel--;
-            else
-                mutateLevel = 8;
-
             cmdLineOptions.setVisualization(false);
             cmdLineOptions.setLevelDifficulty(0);
+            timelimit = Math.min(Math.max(30, i), 100);
             if (!genesGiven)
                 cmdLineOptions.setTimeLimit(timelimit);
-            System.out.print("Breeding generation " + i + " via specimens of fitness " + bestFitness + " and " + secondBest);
-            crossover = breed(parentA, parentB, value);
-            if (Math.abs(prevBest - bestFitness) > 0.5 || immobileCounter++ > 6)
-                immobileCounter = 0;
-            if (!genesGiven)
-                timelimit = Math.min(timelimit+1, 80);
-            prevBest = bestFitness;
-            tempMutate = mutateLevel + immobileCounter;
-            System.out.println( " with mutation " + tempMutate);
+            System.out.println("Breeding generation " + i + " of average fitness " + average(scores));
+            for (int j = 0; j < c; j++){
+                children[j] = breed(randomParent(parents), randomParent(parents), crossoverLevel, mutateLevel);
+            }
 
-            for (int j = 0; j < genSize; j++) {
+            if (!elitism) {
+                parents = new byte[p][len];
+                scores = new float[p];
+            }
+            for (int j = 0; j < c; j++) {
                 value = 0;
-                tempCrossover = mutate(crossover, tempMutate);
-                cmdLineOptions.setVisualization(j%(genSize/-1)==0);
-                mutatingAgent = new jk(tempCrossover);
+                jk currAgent = new jk(children[j]);
                 for (int k = 0; k < numSeeds; k++) {
+                    cmdLineOptions.setVisualization(j==0 && i%3 == 0 && k == 0);
                     cmdLineOptions.setLevelRandSeed(seeds[k]);
-                    cmdLineOptions.setAgent(mutatingAgent);
+                    cmdLineOptions.setAgent(currAgent);
                     basicTask.reset(cmdLineOptions);
+                    cmdLineOptions.setTimeLimit(timelimit);
                     basicTask.runOneEpisode();
                     float tempVal = basicTask.getEnvironment().getEvaluationInfo().computeWeightedFitness(sov);
                     value +=  nb2i(tempVal%500 - (float)(6.4) < .02) * tempVal;
-                    cmdLineOptions.setVisualization(false);
                 }
                 value = value / numSeeds;
-                if (value > bestFitness) {
-                    secondBest = bestFitness;
-                    parentB = parentA.clone();
-                    parentA = tempCrossover.clone();
-                    bestFitness = value;
-                    basicTask.runOneEpisode();
-                } else if (value > secondBest) {
-                    parentB = tempCrossover.clone();
-                    secondBest = value;
-                    //System.out.println(value);
+                if (!elitism){
+                   parents[j] = children[j].clone();
+                   scores[j] = value;
+                }
+                else{
+                    int minIndex = -1;
+                    float minValue = value;
+                    for (int m = 0; m < p; m++){
+                        if ((minValue - scores[m]) > 0.05){
+                            minIndex = m;
+                            minValue = scores[m];
+                        }
+                    }
+                    if (minIndex >= 0){
+                        parents[minIndex] = children[j].clone();
+                        scores[minIndex] = value;
+                    }
                 }
             }
         }
 
-        write(parentA, "parentA.txt");
-        write(parentB, "parentB.txt");
+        write(parents[0], "parentA.txt");
+        write(parents[1], "parentB.txt");
 
 
         //System.out.println("Average fitness is " + average / totalCount + "\n");
