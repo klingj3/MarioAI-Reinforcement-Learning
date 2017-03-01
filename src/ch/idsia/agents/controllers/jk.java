@@ -4,6 +4,8 @@ import ch.idsia.agents.Agent;
 import ch.idsia.benchmark.mario.engine.sprites.Mario;
 import ch.idsia.benchmark.mario.environments.Environment;
 
+import javax.swing.*;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Sergey Karakovskiy
@@ -14,7 +16,7 @@ import ch.idsia.benchmark.mario.environments.Environment;
 
 public class jk extends BasicMarioAIAgent implements Agent
 {
-	private int[] allBlockTypes = {80, 3, -24, -60, -62, -85};
+	private byte[] allBlockTypes = {-60, 0, 1, 3, 2, 80};
 
 	/**NUM BUTTONS*/
 	private final int nb = 5;
@@ -49,31 +51,39 @@ public class jk extends BasicMarioAIAgent implements Agent
 		byte[][] scene = mergedObservation;
 
 
-
 		for (int i = 0; i < nb; i++){
 			action[i] = false;
 		}
-		//printSceneCodes(scene);
 		int gene = 0;
-		int horWidth = 4;
-		int verWidth = 3;
-		int geneSize = 2*verWidth*2*horWidth*allBlockTypes.length*nb;
-		for (int i = 11-horWidth; i < 11+horWidth; ++i){
-			for (int j = 9-(verWidth); j < 9+(verWidth); ++j){
-				for (int k = 0; k < allBlockTypes.length; ++k){
-					for (int l = 0; l < nb; ++l){
-						action[l] = action[l] || (genes[gene++] == 1 && scene[i][j] == allBlockTypes[k]);
+		int horWidth = 1;
+		int verWidth = 1;
+		int geneSize = 3*3*allBlockTypes.length*nb;
+		//printSceneCodes(scene);
+		if (isMarioAbleToJump) {
+			for (int i = 9 - horWidth; i <= 9 + horWidth; ++i) {
+				for (int j = 9 - (verWidth); j <= 9 + (verWidth); ++j) {
+					for (int k = 0; k < allBlockTypes.length; ++k) {
+						for (int l = 0; l < nb; ++l) {
+							action[l] = action[l] || (genes[gene++] == 1 && scene[i][j] == allBlockTypes[k]);
+						}
 					}
 				}
 			}
 		}
-
+		else{
+			gene += geneSize-1;
+			for (int i = 9 - horWidth; i <= 9 + horWidth; ++i) {
+				for (int j = 9 - (verWidth); j <= 9 + (verWidth); ++j) {
+					for (int k = 0; k < allBlockTypes.length; ++k) {
+						for (int l = 0; l < nb; ++l) {
+								action[l] = action[l] || (genes[gene++] == 1 && scene[i][j] == allBlockTypes[k]);
+						}
+					}
+				}
+			}
+		}
 		action[Mario.KEY_JUMP] = action[Mario.KEY_JUMP] && !(++jump >= 30);
-		action[0] = false;
-		action[2] = false;
-		if (action[Mario.KEY_RIGHT])
-			action[Mario.KEY_LEFT ] = false;
-		//System.out.println(gene);
+		action[Mario.KEY_DOWN] = false;
 		return action;
 	}
 
@@ -94,13 +104,9 @@ public class jk extends BasicMarioAIAgent implements Agent
 		for (int i=0; i < scene.length; i++) {
 			System.out.print(String.format("%3d.", i));
 			for (int j=0; j < scene[i].length; j++) {
-				if ((i == 11) && (j == 11)) {
-					System.out.print("   M");
-				}
-				else {
 					//if (scene[i][j] != 1 && scene[i][j] != 25 && scene[i][j] != 80 && scene[i][j] !=  93 && scene[i][j] !=  2 && scene[i][j] !=  3&& scene[i][j] !=  -24 && scene[i][j] !=  2 && scene[i][j] !=  -60 && scene[i][j] !=  -62 && scene[i][j] != 0)
 						System.out.print(String.format("%4d", scene[i][j]));
-				}
+
 			}
 			System.out.println();
 		}

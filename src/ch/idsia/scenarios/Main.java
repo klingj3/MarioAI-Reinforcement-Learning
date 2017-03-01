@@ -25,7 +25,7 @@ public final class Main {
         int percentCrossover = 70;
         Random r = new Random();
         ret = new byte[a.length];
-        for (int i = 0; i < a.length/2; i++) {
+        for (int i = 0; i < a.length; i++) {
             if (r.nextInt(10000) < percentCrossover) {
                 ret[i] = b[i];
             } else
@@ -37,12 +37,20 @@ public final class Main {
     public static byte[] mutate(byte[] a, int percentMutate) {
         byte[] ret = new byte[a.length];
         Random r = new Random();
-        for (int i = 0; i < a.length/2; i++) {
+        for (int i = 0; i < a.length; i++) {
             ret[i] = a[i];
             if (r.nextInt(10000) < percentMutate) {
                 ret[i] = (byte) Math.abs(((int) a[i] - 1));
             }
         }
+        return ret;
+    }
+
+    public static byte[] flipOneByte(byte[] a) {
+        byte[] ret = new byte[a.length];
+        Random r = new Random();
+        int randInt = r.nextInt(a.length);
+        ret[randInt] = (byte) Math.abs(((int) a[randInt] - 1));
         return ret;
     }
 
@@ -65,7 +73,7 @@ public final class Main {
     }
 
     public static byte[] fileToByte(String filename) {
-        byte[] ret = new byte[1440];
+        byte[] ret = new byte[960];
         try {
             int i = 0;
             Scanner scanner = new Scanner(new File(filename));
@@ -87,19 +95,31 @@ public final class Main {
             parentA = fileToByte("parentA.txt");
             parentB = fileToByte("parentB.txt");
         } else {
-            int len = 1440;
+            int len = 540;
             parentA = new byte[len];
             parentB = new byte[len];
-            for (int i = 0; i < args.length; i++) {
+            for (int i = 0; i < len; i++) {
                 parentA[i] = 0;
-                parentB[i] = 1;
+                parentB[i] = 0;
             }
         }
         float prevFitness = 0;
         float bestFitness = 0;
         float secondBest = 0;
+
+        int generations = 20;
+        int genSize = 100;
+        Random r2 = new Random();
+
+        int numSeeds = 1;
+        int[] seeds = new int[numSeeds];
+        for (int i = 0; i < numSeeds; i++){
+            seeds[i] = i;
+        }
+
+
         //final String argsString = "-vis off -ld 25 -ag ch.idsia.agents.controllers.ScaredShooty";
-        final String argsString = "-vis off -fps 100 -tl 20 -ld 0 -ag ch.idsia.agents.controllers.jk";
+        final String argsString = "-vis on -fps 100 -tl 85 -ld 0 -ag ch.idsia.agents.controllers.jk";
         final CmdLineOptions cmdLineOptions = new CmdLineOptions(argsString);
 //        final Environment environment = new MarioEnvironment();
         Agent mutatingAgent = new jk(parentA);
@@ -111,28 +131,43 @@ public final class Main {
         final MarioCustomSystemOfValues sov = new MarioCustomSystemOfValues();
         byte[] crossover;
         byte[] tempCrossover;
-        Random r2 = new Random();
 
-        int mutateLevel = 45; //Out of 1000
-        int genSize = 50;
+
+        int tempMutate;
+        int mutateLevel = 20; //Out of 10000
         float value = 0;
-        int generations = 30;
-        int numSeeds = 25;
+
+        float prevBest = 0;
+        int immobileCounter = 0;
+        int timelimit = 5;
 
         for (int i = 0; i < generations; ++i) {
+            if (i < 12 && !genesGiven)
+                mutateLevel--;
+            else
+                mutateLevel = 8;
+
             cmdLineOptions.setVisualization(false);
             cmdLineOptions.setLevelDifficulty(0);
             if (!genesGiven)
-                cmdLineOptions.setTimeLimit(Math.min(Math.max(10, i/2), 100));
-            System.out.println("Breeding generation " + i + " via specimens of fitness " + bestFitness + " and " + secondBest);
+                cmdLineOptions.setTimeLimit(timelimit);
+            System.out.print("Breeding generation " + i + " via specimens of fitness " + bestFitness + " and " + secondBest);
             crossover = breed(parentA, parentB, value);
+            if (Math.abs(prevBest - bestFitness) > 0.5 || immobileCounter++ > 6)
+                immobileCounter = 0;
+            if (!genesGiven)
+                timelimit = Math.min(timelimit+1, 80);
+            prevBest = bestFitness;
+            tempMutate = mutateLevel + immobileCounter;
+            System.out.println( " with mutation " + tempMutate);
+
             for (int j = 0; j < genSize; j++) {
                 value = 0;
-                tempCrossover = mutate(crossover, mutateLevel);
+                tempCrossover = mutate(crossover, tempMutate);
                 cmdLineOptions.setVisualization(j%(genSize/-1)==0);
                 mutatingAgent = new jk(tempCrossover);
                 for (int k = 0; k < numSeeds; k++) {
-                    cmdLineOptions.setLevelRandSeed(r2.nextInt());
+                    cmdLineOptions.setLevelRandSeed(seeds[k]);
                     cmdLineOptions.setAgent(mutatingAgent);
                     basicTask.reset(cmdLineOptions);
                     basicTask.runOneEpisode();
