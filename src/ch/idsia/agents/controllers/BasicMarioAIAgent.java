@@ -65,7 +65,7 @@ public void integrateObservation(Environment environment)
 {
     levelScene = environment.getLevelSceneObservationZ(zLevelScene);
     enemies = environment.getEnemiesObservationZ(zLevelEnemies);
-    mergedObservation = environment.getMergedObservationZZ(2, 1);
+    mergedObservation = environment.getMergedObservationZZ(1, 1);
 
     this.marioFloatPos = environment.getMarioFloatPos();
     this.enemiesFloatPos = environment.getEnemiesFloatPos();

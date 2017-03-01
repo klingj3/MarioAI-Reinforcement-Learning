@@ -20,18 +20,28 @@ import java.util.Scanner;
  * Package: ch.idsia.scenarios
  */
 public final class Main {
-    public static byte[] breed(byte[] a, byte[] b, int percentCrossover, int percentMutate) {
+    public static byte[] breed(byte[] a, byte[] b, byte[] bestToDate, double percentCrossover, double percentMutate) {
         //Crossover
-        byte[] ret = a.clone();
         Random r = new Random();
-        for (int i = 0; i < percentCrossover; i++) {
+        Random rDoub = new Random();
+        byte[] ret;
+        if (rDoub.nextDouble() < .9)
+             ret = a.clone();
+        else
+            ret = bestToDate.clone();
+
+        double crossover = percentCrossover * (double)(a.length);
+        while (rDoub.nextDouble() < crossover) {
+            crossover -= 1;
             int crossPos = r.nextInt(ret.length);
             ret[crossPos] = b[crossPos];
         }
         //Mutate
-        for (int i = 0; i < percentMutate; i++) {
+        double mutate = (percentMutate)*(double)(a.length);
+        while (rDoub.nextDouble() < mutate) {
+            mutate -= 1;
             int mutPos = r.nextInt(ret.length);
-            ret[mutPos] = (byte)Math.abs(ret[mutPos] - 1);
+            ret[mutPos] = (byte) Math.abs(ret[mutPos] - 1);
         }
         return ret;
     }
@@ -82,15 +92,15 @@ public final class Main {
 
     public static void main(String[] args) {
         boolean genesGiven = false;
-        boolean elitism = true;
+        boolean elitism = false;
 
         byte[] parentA;
         byte[] parentB;
-        int len = 540;
+        int len = 450;
 
         if (genesGiven) {
-            parentA = fileToByte("parentA.txt");
-            parentB = fileToByte("parentB.txt");
+            parentA = fileToByte("best.txt");
+            parentB = parentA.clone();
         } else {
             parentA = new byte[len];
             parentB = new byte[len];
@@ -101,13 +111,13 @@ public final class Main {
         }
 
         int generations = 500;
-        int c = 100;
-        int p = 20;
+        int c = 50;
+        int p = 8;
         Random r2 = new Random();
 
 
-        int mutateLevel = 20; //Out of 10000
-        int crossoverLevel = 10;
+        double mutateLevel = 0.0015;
+        double crossoverLevel = 0.25;
         byte[][] parents = new byte[p][len];
         float[] scores = new float[p];
         for (int i = 0; i < p; i++){
@@ -115,16 +125,11 @@ public final class Main {
         }
         byte[][] children = new byte[c][len];
 
-        //Creates the innitial parents
-        for (int i = 0; i < p; i++){
-            children[i] = breed(parentA, parentB, crossoverLevel, mutateLevel);
-        }
-
         //Establishes seeds.
-        int numSeeds = 1;
+        int numSeeds = 5;
         int[] seeds = new int[numSeeds];
         for (int i = 0; i < numSeeds; i++){
-            seeds[i] = i;
+            seeds[i] = r2.nextInt(1000);
         }
 
         //Establishing junk.
@@ -135,18 +140,35 @@ public final class Main {
 
         int tempMutate;
         float value = 0;
+        float prevAverage = 0;
 
         int timelimit = 5;
+
+
+        /**For saving best species*/
+        byte[] bestEver = parentA.clone();
+        float bestValue = 0;
+
+        //Creates the innitial chidlren
+        for (int i = 0; i < p; i++){
+            children[i] = breed(parentA, parentB, bestEver, crossoverLevel, mutateLevel);
+        }
+
 
         for (int i = 0; i < generations; ++i) {
             cmdLineOptions.setVisualization(false);
             cmdLineOptions.setLevelDifficulty(0);
-            timelimit = Math.min(Math.max(30, i), 100);
+            timelimit = Math.min(Math.max(5, i/3), 100);
             if (!genesGiven)
                 cmdLineOptions.setTimeLimit(timelimit);
-            System.out.println("Breeding generation " + i + " of average fitness " + average(scores));
+            if (average(scores) == prevAverage && i%10 != 0)
+                mutateLevel += 0.0002;
+            else
+                mutateLevel = 0.0015;
+            System.out.println(i + "   " + average(scores));// + " with mutation rate " + mutateLevel*100 + "% and crossover rate " + crossoverLevel*100 + "%");
+            prevAverage = average(scores);
             for (int j = 0; j < c; j++){
-                children[j] = breed(randomParent(parents), randomParent(parents), crossoverLevel, mutateLevel);
+                children[j] = breed(randomParent(parents), randomParent(parents), bestEver, crossoverLevel, mutateLevel);
             }
 
             if (!elitism) {
@@ -161,13 +183,16 @@ public final class Main {
                     cmdLineOptions.setLevelRandSeed(seeds[k]);
                     cmdLineOptions.setAgent(currAgent);
                     basicTask.reset(cmdLineOptions);
-                    cmdLineOptions.setTimeLimit(timelimit);
                     basicTask.runOneEpisode();
                     float tempVal = basicTask.getEnvironment().getEvaluationInfo().computeWeightedFitness(sov);
                     value +=  nb2i(tempVal%500 - (float)(6.4) < .02) * tempVal;
                 }
                 value = value / numSeeds;
-                if (!elitism){
+                if (value > bestValue){
+                    bestEver = children[j].clone();
+                    bestValue = value;
+                }
+                if (!elitism && j < p){
                    parents[j] = children[j].clone();
                    scores[j] = value;
                 }
@@ -188,8 +213,7 @@ public final class Main {
             }
         }
 
-        write(parents[0], "parentA.txt");
-        write(parents[1], "parentB.txt");
+        write(bestEver, "best.txt");;
 
 
         //System.out.println("Average fitness is " + average / totalCount + "\n");

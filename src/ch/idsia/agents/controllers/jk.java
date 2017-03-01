@@ -16,7 +16,6 @@ import javax.swing.*;
 
 public class jk extends BasicMarioAIAgent implements Agent
 {
-	private byte[] allBlockTypes = {-60, 0, 1, 3, 2, 80};
 
 	/**NUM BUTTONS*/
 	private final int nb = 5;
@@ -57,27 +56,43 @@ public class jk extends BasicMarioAIAgent implements Agent
 		int gene = 0;
 		int horWidth = 1;
 		int verWidth = 1;
-		int geneSize = 3*3*allBlockTypes.length*nb;
-		//printSceneCodes(scene);
+		int geneSize = 3*3*5*nb;
+		//System.out.println(geneSize);
 		if (isMarioAbleToJump) {
 			for (int i = 9 - horWidth; i <= 9 + horWidth; ++i) {
 				for (int j = 9 - (verWidth); j <= 9 + (verWidth); ++j) {
-					for (int k = 0; k < allBlockTypes.length; ++k) {
-						for (int l = 0; l < nb; ++l) {
-							action[l] = action[l] || (genes[gene++] == 1 && scene[i][j] == allBlockTypes[k]);
-						}
+					// 0 			 = nothing
+					//-60, -24, -85  = can't pass through
+					// 2, 3 		 = coin, mushroom, fire flower
+					// 80			 = jumpable enemy
+					// -62			 = Soft obstacle
+
+					for (int l = 0; l < nb; ++l) {
+						action[l] = action[l] || (genes[gene++] == 1 && (scene[i][j] == 0));
+						action[l] = action[l] || (genes[gene++] == 1 && (scene[i][j] == -60 || scene[i][j] == -24 || scene[i][j] == -85));
+						action[l] = action[l] || (genes[gene++] == 1 && (scene[i][j] == 2 || scene[i][j] == 3));
+						action[l] = action[l] || (genes[gene++] == 1 && (scene[i][j] == 80));
+						action[l] = action[l] || (genes[gene++] == 1 && (scene[i][j] == -62));
 					}
 				}
 			}
 		}
 		else{
-			gene += geneSize-1;
+			gene += geneSize;
 			for (int i = 9 - horWidth; i <= 9 + horWidth; ++i) {
 				for (int j = 9 - (verWidth); j <= 9 + (verWidth); ++j) {
-					for (int k = 0; k < allBlockTypes.length; ++k) {
-						for (int l = 0; l < nb; ++l) {
-								action[l] = action[l] || (genes[gene++] == 1 && scene[i][j] == allBlockTypes[k]);
-						}
+					// 0 			 = nothing
+					//-60, -24, -85  = can't pass through
+					// 2, 3 		 = coin, mushroom, fire flower
+					// 80			 = jumpable enemy
+					// -62			 = Soft obstacle
+
+					for (int l = 0; l < nb; ++l) {
+						action[l] = action[l] || (genes[gene++] == 1 && (scene[i][j] == 0));
+						action[l] = action[l] || (genes[gene++] == 1 && (scene[i][j] == -60 || scene[i][j] == -24 || scene[i][j] == -85));
+						action[l] = action[l] || (genes[gene++] == 1 && (scene[i][j] == 2 || scene[i][j] == 3));
+						action[l] = action[l] || (genes[gene++] == 1 && (scene[i][j] == 80));
+						action[l] = action[l] || (genes[gene++] == 1 && (scene[i][j] == -62));
 					}
 				}
 			}
