@@ -20,11 +20,11 @@ import java.util.Scanner;
  * Package: ch.idsia.scenarios
  */
 public final class Main {
-    public static byte[] breed(byte[] a, byte[] b, byte[] bestToDate, double percentCrossover, double percentMutate) {
+    public static double[] breed(double[] a, double[] b, double[] bestToDate, double percentCrossover, double percentMutate) {
         //Crossover
         Random r = new Random();
         Random rDoub = new Random();
-        byte[] ret;
+        double[] ret;
         if (rDoub.nextDouble() < .9)
              ret = a.clone();
         else
@@ -41,16 +41,21 @@ public final class Main {
         while (rDoub.nextDouble() < mutate) {
             mutate -= 1;
             int mutPos = r.nextInt(ret.length);
-            ret[mutPos] = (byte) Math.abs(ret[mutPos] - 1);
+            if (r.nextDouble() < .5){
+                ret[mutPos] = (double) Math.abs(ret[mutPos] - 0.1);
+                ret[mutPos] = Math.max(0, ret[mutPos]);}
+            else{
+                ret[mutPos] = (double) Math.abs(ret[mutPos] + 0.1);
+                ret[mutPos] = Math.min(1, ret[mutPos]);}
         }
         return ret;
     }
 
-    public static void write(byte[] a, String filename) {
+    public static void write(double[] a, String filename) {
         try {
             Writer wr = new FileWriter(filename);
             for (int i = 0; i < a.length; i++) {
-                wr.write(Byte.toString(a[i]) + " ");
+                wr.write(Double.toString(a[i]) + " ");
             }
             wr.close();
         } catch (IOException e) {
@@ -64,13 +69,13 @@ public final class Main {
         return 1;
     }
 
-    public static byte[] fileToByte(String filename) {
-        byte[] ret = new byte[960];
+    public static double[] fileTodouble(String filename) {
+        double[] ret = new double[960];
         try {
             int i = 0;
             Scanner scanner = new Scanner(new File(filename));
             while (scanner.hasNextInt()) {
-                ret[i++] = (byte) scanner.nextInt();
+                ret[i++] = (double) scanner.nextInt();
             }
         } catch (IOException e) {
 
@@ -78,7 +83,7 @@ public final class Main {
         return ret;
     }
 
-    public static byte[] randomParent(byte[][] parents){
+    public static double[] randomParent(double[][] parents){
         return parents[new Random().nextInt(parents.length)];
     }
 
@@ -94,36 +99,36 @@ public final class Main {
         boolean genesGiven = false;
         boolean elitism = false;
 
-        byte[] parentA;
-        byte[] parentB;
+        double[] parentA;
+        double[] parentB;
         int len = 450;
 
         if (genesGiven) {
-            parentA = fileToByte("best.txt");
+            parentA = fileTodouble("best.txt");
             parentB = parentA.clone();
         } else {
-            parentA = new byte[len];
-            parentB = new byte[len];
+            parentA = new double[len];
+            parentB = new double[len];
             for (int i = 0; i < len; i++) {
                 parentA[i] = 0;
-                parentB[i] = 1;
+                parentB[i] = 0.1;
             }
         }
 
         int generations = 500;
-        int c = 50;
-        int p = 8;
+        int c = 100;
+        int p = 20;
         Random r2 = new Random();
 
 
         double mutateLevel = 0.0015;
-        double crossoverLevel = 0.25;
-        byte[][] parents = new byte[p][len];
+        double crossoverLevel = 0.5;
+        double[][] parents = new double[p][len];
         float[] scores = new float[p];
         for (int i = 0; i < p; i++){
             scores[i] = (float)0;
         }
-        byte[][] children = new byte[c][len];
+        double[][] children = new double[c][len];
 
         //Establishes seeds.
         int numSeeds = 5;
@@ -146,7 +151,7 @@ public final class Main {
 
 
         /**For saving best species*/
-        byte[] bestEver = parentA.clone();
+        double[] bestEver = parentA.clone();
         float bestValue = 0;
 
         //Creates the innitial chidlren
@@ -158,21 +163,23 @@ public final class Main {
         for (int i = 0; i < generations; ++i) {
             cmdLineOptions.setVisualization(false);
             cmdLineOptions.setLevelDifficulty(0);
-            timelimit = Math.min(Math.max(5, i/3), 100);
+            timelimit = Math.min(Math.max(5, i/2), 100);
             if (!genesGiven)
                 cmdLineOptions.setTimeLimit(timelimit);
             if (average(scores) == prevAverage && i%10 != 0)
                 mutateLevel += 0.0002;
             else
                 mutateLevel = 0.0015;
-            System.out.println(i + "   " + average(scores));// + " with mutation rate " + mutateLevel*100 + "% and crossover rate " + crossoverLevel*100 + "%");
+            System.out.println(average(scores));// + " with mutation rate " + mutateLevel*100 + "% and crossover rate " + crossoverLevel*100 + "%");
             prevAverage = average(scores);
+            if (prevAverage == 0)
+                i = 0;
             for (int j = 0; j < c; j++){
                 children[j] = breed(randomParent(parents), randomParent(parents), bestEver, crossoverLevel, mutateLevel);
             }
 
             if (!elitism) {
-                parents = new byte[p][len];
+                parents = new double[p][len];
                 scores = new float[p];
             }
             for (int j = 0; j < c; j++) {
