@@ -71,12 +71,12 @@ public final class Main {
     }
 
     public static double[] fileTodouble(String filename) {
-        double[] ret = new double[960];
+        double[] ret = new double[1500];
         try {
             int i = 0;
             Scanner scanner = new Scanner(new File(filename));
-            while (scanner.hasNextInt()) {
-                ret[i++] = (double) scanner.nextInt();
+            while (scanner.hasNextDouble() && i < ret.length) {
+                ret[i++] = (double) scanner.nextDouble();
             }
         } catch (IOException e) {
 
@@ -97,12 +97,12 @@ public final class Main {
     }
 
     public static void main(String[] args) {
-        boolean genesGiven = false;
+        boolean genesGiven = true;
         boolean elitism = false;
 
         double[] parentA;
         double[] parentB;
-        int len = 455;
+        int len = 1500;
 
         if (genesGiven) {
             parentA = fileTodouble("best.txt");
@@ -167,16 +167,17 @@ public final class Main {
 
         for (int i = 0; i < generations; ++i) {
             cmdLineOptions.setVisualization(false);
-            cmdLineOptions.setLevelDifficulty(0);
+            cmdLineOptions.setLevelDifficulty(5);
             timelimit = Math.min(Math.max(20, i/3), 80);
             if (!genesGiven)
                 cmdLineOptions.setTimeLimit(timelimit);
             if (Math.abs(average(scores)-prevAverage) < 0.7 && i%10 != 0)
-                sigma += 0.001;
-            else if (sigma > initSigma + 0.1)
-                sigma = initSigma;
+                sigma += 0.0003;
             else
-                sigma = Math.max(sigma - 0.001, 0.0001);
+                sigma = Math.min(initSigma, Math.max(sigma - 0.0003, 0.0001));
+
+            if (sigma > initSigma + 0.1)
+                sigma = initSigma;
             System.out.println(i + " " + average(scores) + "," + Double.toString(sigma).substring(0, Math.min(5, Double.toString(sigma).length())));
             prevAverage = average(scores);
             for (int j = 0; j < c; j++){

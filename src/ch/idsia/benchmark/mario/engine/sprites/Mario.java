@@ -747,7 +747,7 @@ public void kick(Shell shell)
         carried = shell;
         shell.carried = true;
         setRacoon(true);
-        System.out.println("shell = " + shell);
+       // System.out.println("shell = " + shell);
     } else
     {
         invulnerableTime = 1;

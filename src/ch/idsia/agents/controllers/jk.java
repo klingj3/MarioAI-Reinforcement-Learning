@@ -58,12 +58,12 @@ public class jk extends BasicMarioAIAgent implements Agent
 
 
 		for (int i = 0; i < nb; i++){
-		//	action[i] = false;
+			action[i] = false;
 		}
 		int gene = 0;
-		int horWidth = 1;
-		int verWidth = 1;
-		int geneSize = 3*3*5*nb;
+		int horWidth = 2;
+		int verWidth = 2;
+		int geneSize = 5*5*6*nb;
 
 		double hiddenLayer[] = new double[nb];
 		//System.out.println(geneSize);
@@ -75,13 +75,14 @@ public class jk extends BasicMarioAIAgent implements Agent
 					// 2, 3 		 = coin, mushroom, fire flower
 					// 80			 = jumpable enemy
 					// -62			 = Soft obstacle
-
+					// 93			 = Spiky
 					for (int l = 0; l < nb; ++l) {
 						hiddenLayer[l] += (genes[gene++]*b2i(scene[i][j] == 0));
 						hiddenLayer[l] += (genes[gene++]*b2i(scene[i][j] == -60 || scene[i][j] == -24 || scene[i][j] == -85));
 						hiddenLayer[l] += (genes[gene++]*b2i(scene[i][j] == 2 || scene[i][j] == 3));
 						hiddenLayer[l] += (genes[gene++]*b2i(scene[i][j] == 80));
 						hiddenLayer[l] += (genes[gene++])*b2i(scene[i][j] == -62);
+						hiddenLayer[l] += (genes[gene++])*b2i(scene[i][j] == 93);
 					}
 				}
 			}
@@ -106,9 +107,9 @@ public class jk extends BasicMarioAIAgent implements Agent
 				}
 			}
 		}
-		for (int i = 1; i < nb; i++){
+		for (int i = 0; i < nb; i++){
 			//System.out.println(genes[genes.length-5 + 1]);
-			if (hiddenLayer[i] >  0.5){
+			if (hiddenLayer[i] >  0.25){
 				action[i] = true;
 			}
 			//if (hiddenLayer[i] < -0.2){
