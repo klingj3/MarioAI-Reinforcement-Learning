@@ -26,5 +26,40 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES />
+        <JAVADOC>
+          <root url="jar://$MODULE_DIR$/lib/commons-lang-2.6-bin.zip!/commons-lang-2.6/apidocs" />
+        </JAVADOC>
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/commons-lang-2.6.jar!/" />
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://$MODULE_DIR$/lib/commons-lang-2.6-javadoc.jar!/" />
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/lib/commons-lang-2.6-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/commons-math-2.2.jar!/" />
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://$MODULE_DIR$/lib/commons-math-2.2-javadoc.jar!/" />
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/lib/commons-math-2.2-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
   </component>
 </module>

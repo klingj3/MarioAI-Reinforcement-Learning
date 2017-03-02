@@ -106,8 +106,9 @@ public class jk extends BasicMarioAIAgent implements Agent
 				}
 			}
 		}
-		for (int i = 0; i < nb; i++){
-			if (hiddenLayer[i] > 0.15){
+		for (int i = 1; i < nb; i++){
+			//System.out.println(genes[genes.length-5 + 1]);
+			if (hiddenLayer[i] >  0.5){
 				action[i] = true;
 			}
 			//if (hiddenLayer[i] < -0.2){

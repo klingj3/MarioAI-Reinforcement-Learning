@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="21a0aecb-1c33-4b2d-97e1-9c9bc945c119" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MarioAI+Benchmark/ch/idsia/agents/controllers/jk.class" afterPath="$PROJECT_DIR$/out/production/MarioAI+Benchmark/ch/idsia/agents/controllers/jk.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MarioAI+Benchmark/ch/idsia/scenarios/Main.class" afterPath="$PROJECT_DIR$/out/production/MarioAI+Benchmark/ch/idsia/scenarios/Main.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MarioAI+Benchmark.iml" afterPath="$PROJECT_DIR$/MarioAI+Benchmark.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ch/idsia/agents/controllers/jk.java" afterPath="$PROJECT_DIR$/src/ch/idsia/agents/controllers/jk.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ch/idsia/scenarios/Main.java" afterPath="$PROJECT_DIR$/src/ch/idsia/scenarios/Main.java" />
     </list>
@@ -23,12 +26,12 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ch/idsia/scenarios/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="175" column="21" lean-forward="true" selection-start-line="175" selection-start-column="21" selection-end-line="175" selection-end-column="21" />
+            <state relative-caret-position="332">
+              <caret line="177" column="16" lean-forward="true" selection-start-line="177" selection-start-column="16" selection-end-line="177" selection-end-column="16" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2659#2660#0" expanded="true" />
-                <element signature="e#2727#2728#0" expanded="true" />
+                <element signature="e#2625#2626#0" expanded="true" />
+                <element signature="e#2693#2694#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -38,7 +41,7 @@
         <entry file="file://$PROJECT_DIR$/src/ch/idsia/benchmark/tasks/Task.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="68">
-              <caret line="5" column="3" lean-forward="true" selection-start-line="5" selection-start-column="3" selection-end-line="5" selection-end-column="3" />
+              <caret line="5" column="3" lean-forward="false" selection-start-line="5" selection-start-column="3" selection-end-line="5" selection-end-column="3" />
               <folding />
             </state>
           </provider>
@@ -48,7 +51,7 @@
         <entry file="file://$PROJECT_DIR$/src/ch/idsia/tools/EvaluationInfo.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="253">
-              <caret line="76" column="1" lean-forward="true" selection-start-line="76" selection-start-column="1" selection-end-line="79" selection-end-column="17" />
+              <caret line="76" column="1" lean-forward="false" selection-start-line="76" selection-start-column="1" selection-end-line="79" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -57,8 +60,8 @@
       <file leaf-file-name="jk.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ch/idsia/agents/controllers/jk.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-136">
-              <caret line="79" column="74" lean-forward="false" selection-start-line="79" selection-start-column="74" selection-end-line="79" selection-end-column="74" />
+            <state relative-caret-position="269">
+              <caret line="110" column="37" lean-forward="false" selection-start-line="110" selection-start-column="37" selection-end-line="110" selection-end-column="37" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -90,7 +93,7 @@
         <entry file="file://$PROJECT_DIR$/src/ch/idsia/agents/learning/SimpleMLPAgent.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="378">
-              <caret line="123" column="0" lean-forward="true" selection-start-line="123" selection-start-column="0" selection-end-line="123" selection-end-column="0" />
+              <caret line="123" column="0" lean-forward="false" selection-start-line="123" selection-start-column="0" selection-end-line="123" selection-end-column="0" />
               <folding>
                 <element signature="e#1509#1510#0" expanded="true" />
                 <element signature="e#1575#1576#0" expanded="true" />
@@ -123,8 +126,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>copy</find>
-      <find>reset</find>
       <find>Reset</find>
       <find>t</find>
       <find>value = 0</find>
@@ -151,8 +152,10 @@
       <find>hiddenNeurons</find>
       <find>diffi</find>
       <find>System.out.println</find>
-      <find>timelimit</find>
       <find>diffic</find>
+      <find>timelimit</find>
+      <find>sigma</find>
+      <find>System.out.</find>
     </findStrings>
     <replaceStrings>
       <replace>genSize</replace>
@@ -437,7 +440,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/junit-4.8.2.jar!/" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/commons-math-2.2.jar!/" />
     <property name="SearchEverywhereHistoryKey" value="isFinished&#9;PSI&#9;JAVA://ch.idsia.benchmark.tasks.Task#isFinished&#10;finish&#9;PSI&#9;JAVA://ch.idsia.benchmark.mario.environments.Environment#isLevelFinished&#10;state&#9;PSI&#9;JAVA://ch.idsia.agents.controllers.BasicMarioAIAgent#marioState&#10;goal&#9;PSI&#9;JAVA://ch.idsia.utils.ParameterContainer#getNumberOfAllowedOptions" />
   </component>
   <component name="RunManager" selected="Application.Main">
@@ -716,7 +719,14 @@
       <option name="project" value="LOCAL" />
       <updated>1488411414122</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Doubles.">
+      <created>1488414066699</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1488414066699</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -794,8 +804,8 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2659#2660#0" expanded="true" />
-            <element signature="e#2727#2728#0" expanded="true" />
+            <element signature="e#2625#2626#0" expanded="true" />
+            <element signature="e#2693#2694#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -905,8 +915,8 @@
           <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2659#2660#0" expanded="true" />
-            <element signature="e#2727#2728#0" expanded="true" />
+            <element signature="e#2625#2626#0" expanded="true" />
+            <element signature="e#2693#2694#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -955,8 +965,8 @@
           <caret line="2" column="31" lean-forward="false" selection-start-line="2" selection-start-column="31" selection-end-line="2" selection-end-column="31" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2659#2660#0" expanded="true" />
-            <element signature="e#2727#2728#0" expanded="true" />
+            <element signature="e#2625#2626#0" expanded="true" />
+            <element signature="e#2693#2694#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1177,7 +1187,7 @@
     <entry file="file://$PROJECT_DIR$/src/ch/idsia/agents/learning/SimpleMLPAgent.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="378">
-          <caret line="123" column="0" lean-forward="true" selection-start-line="123" selection-start-column="0" selection-end-line="123" selection-end-column="0" />
+          <caret line="123" column="0" lean-forward="false" selection-start-line="123" selection-start-column="0" selection-end-line="123" selection-end-column="0" />
           <folding>
             <element signature="e#1509#1510#0" expanded="true" />
             <element signature="e#1575#1576#0" expanded="true" />
@@ -1193,26 +1203,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/idsia/tools/EvaluationInfo.java">
+    <entry file="file://$PROJECT_DIR$/src/ch/idsia/benchmark/tasks/Task.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="76" column="1" lean-forward="true" selection-start-line="76" selection-start-column="1" selection-end-line="79" selection-end-column="17" />
+        <state relative-caret-position="68">
+          <caret line="5" column="3" lean-forward="false" selection-start-line="5" selection-start-column="3" selection-end-line="5" selection-end-column="3" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/idsia/benchmark/tasks/Task.java">
+    <entry file="file://$PROJECT_DIR$/src/ch/idsia/tools/EvaluationInfo.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="5" column="3" lean-forward="true" selection-start-line="5" selection-start-column="3" selection-end-line="5" selection-end-column="3" />
+        <state relative-caret-position="253">
+          <caret line="76" column="1" lean-forward="false" selection-start-line="76" selection-start-column="1" selection-end-line="79" selection-end-column="17" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ch/idsia/agents/controllers/jk.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-136">
-          <caret line="79" column="74" lean-forward="false" selection-start-line="79" selection-start-column="74" selection-end-line="79" selection-end-column="74" />
+        <state relative-caret-position="269">
+          <caret line="110" column="37" lean-forward="false" selection-start-line="110" selection-start-column="37" selection-end-line="110" selection-end-column="37" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1221,12 +1231,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ch/idsia/scenarios/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="175" column="21" lean-forward="true" selection-start-line="175" selection-start-column="21" selection-end-line="175" selection-end-column="21" />
+        <state relative-caret-position="332">
+          <caret line="177" column="16" lean-forward="true" selection-start-line="177" selection-start-column="16" selection-end-line="177" selection-end-column="16" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2659#2660#0" expanded="true" />
-            <element signature="e#2727#2728#0" expanded="true" />
+            <element signature="e#2625#2626#0" expanded="true" />
+            <element signature="e#2693#2694#0" expanded="true" />
           </folding>
         </state>
       </provider>

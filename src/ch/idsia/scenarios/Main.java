@@ -15,12 +15,18 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
 
+import org.apache.commons.math.MathException;
+import org.apache.commons.math.distribution.NormalDistribution;
+import org.apache.commons.math.distribution.NormalDistributionImpl;
+
 /**
  * Created by IntelliJ IDEA. User: Sergey Karakovskiy, sergey at idsia dot ch Date: Mar 17, 2010 Time: 8:28:00 AM
  * Package: ch.idsia.scenarios
  */
 public final class Main {
-    public static double[] breed(double[] a, double[] b, double[] bestToDate, double percentCrossover, double percentMutate) {
+    double sigma = 0;
+
+    public static double[] breed(double[] a, double[] b, double[] bestToDate, double percentCrossover, double sigma) {
         //Crossover
         Random r = new Random();
         Random rDoub = new Random();
@@ -30,23 +36,18 @@ public final class Main {
         else
             ret = bestToDate.clone();
 
-        double crossover = percentCrossover * (double)(a.length);
+        double crossover = percentCrossover * (double)(a.length-5);
         while (rDoub.nextDouble() < crossover) {
             crossover -= 1;
-            int crossPos = r.nextInt(ret.length);
+            int crossPos = r.nextInt(ret.length-5);
             ret[crossPos] = b[crossPos];
         }
         //Mutate
-        double mutate = (percentMutate)*(double)(a.length);
-        while (rDoub.nextDouble() < mutate) {
-            mutate -= 1;
-            int mutPos = r.nextInt(ret.length);
-            if (r.nextDouble() < .5){
-                ret[mutPos] = (double) Math.abs(ret[mutPos] - 0.1);
-                ret[mutPos] = Math.max(0, ret[mutPos]);}
-            else{
-                ret[mutPos] = (double) Math.abs(ret[mutPos] + 0.1);
-                ret[mutPos] = Math.min(1, ret[mutPos]);}
+        for (int i = 0; i < ret.length-5; i++){
+            ret[i] = Math.abs(rDoub.nextGaussian()*sigma + ret[i]);
+        }
+        for (int i = ret.length-5; i < ret.length; i++){
+            ret[i] = Math.abs(rDoub.nextGaussian()*(sigma) + ret[i]);
         }
         return ret;
     }
@@ -101,40 +102,44 @@ public final class Main {
 
         double[] parentA;
         double[] parentB;
-        int len = 450;
+        int len = 455;
 
         if (genesGiven) {
             parentA = fileTodouble("best.txt");
             parentB = parentA.clone();
         } else {
-            parentA = new double[len];
-            parentB = new double[len];
+            parentA = new double[len+5];
+            parentB = new double[len+5];
             for (int i = 0; i < len; i++) {
                 parentA[i] = 0;
                 parentB[i] = 0.1;
             }
+            for (int i = len; i < len+5; i++){
+                parentA[i] = 1.5;
+                parentB[i] = 1.5;
+            }
         }
 
-        int generations = 1000;
+        int generations = 500;
         int c = 100;
-        int p = 20;
+        int p = 15;
         Random r2 = new Random();
 
 
-        double mutateLevel = 0.0016;
+        double sigma = 0.005;
         double crossoverLevel = 0.2;
-        double[][] parents = new double[p][len];
+        double[][] parents = new double[p][len+5];
         float[] scores = new float[p];
         for (int i = 0; i < p; i++){
             scores[i] = (float)0;
         }
-        double[][] children = new double[c][len];
+        double[][] children = new double[c][len+5];
 
         //Establishes seeds.
-        int numSeeds = 5;
+        int numSeeds = 1;
         int[] seeds = new int[numSeeds];
         for (int i = 0; i < numSeeds; i++){
-            seeds[i] = r2.nextInt(917);
+            seeds[i] = r2.nextInt();
         }
 
         //Establishing junk.
@@ -156,30 +161,30 @@ public final class Main {
 
         //Creates the innitial chidlren
         for (int i = 0; i < p; i++){
-            children[i] = breed(parentA, parentB, bestEver, crossoverLevel, mutateLevel);
+            children[i] = breed(parentA, parentB, bestEver, crossoverLevel, sigma);
         }
 
 
         for (int i = 0; i < generations; ++i) {
             cmdLineOptions.setVisualization(false);
             cmdLineOptions.setLevelDifficulty(0);
-            timelimit = Math.min(Math.max(20, i/2), 100);
+            timelimit = Math.min(Math.max(20, i/3), 80);
             if (!genesGiven)
                 cmdLineOptions.setTimeLimit(timelimit);
-            if (average(scores) == prevAverage && i%10 != 0 && i > 16)
-                mutateLevel += 0.0005;
+            if (Math.abs(average(scores)-prevAverage) < 0.7 && i%10 != 0)
+                sigma += 0.0005;
+            else if (sigma > 0.012)
+                sigma = 0.005;
             else
-                mutateLevel = 0.0015;
-            System.out.println(average(scores));// + " with mutation rate " + mutateLevel*100 + "% and crossover rate " + crossoverLevel*100 + "%");
+                sigma = Math.max(sigma - 0.001, 0.0001);
+            System.out.println(i + " " + average(scores) + "," + Double.toString(sigma).substring(0, Math.min(5, Double.toString(sigma).length())));
             prevAverage = average(scores);
-            if (prevAverage == 0)
-                i = 0;
             for (int j = 0; j < c; j++){
-                children[j] = breed(randomParent(parents), randomParent(parents), bestEver, crossoverLevel, mutateLevel);
+                children[j] = breed(randomParent(parents), randomParent(parents), bestEver, crossoverLevel, sigma);
             }
 
             if (!elitism) {
-                parents = new double[p][len];
+                parents = new double[p][len+5];
                 scores = new float[p];
             }
             for (int j = 0; j < c; j++) {
