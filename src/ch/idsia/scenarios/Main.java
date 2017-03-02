@@ -122,11 +122,11 @@ public final class Main {
 
         int generations = 500;
         int c = 100;
-        int p = 15;
+        int p = 20;
         Random r2 = new Random();
 
-
-        double sigma = 0.005;
+        double initSigma = 0.005;
+        double sigma = initSigma;
         double crossoverLevel = 0.2;
         double[][] parents = new double[p][len+5];
         float[] scores = new float[p];
@@ -136,7 +136,7 @@ public final class Main {
         double[][] children = new double[c][len+5];
 
         //Establishes seeds.
-        int numSeeds = 1;
+        int numSeeds = 5;
         int[] seeds = new int[numSeeds];
         for (int i = 0; i < numSeeds; i++){
             seeds[i] = r2.nextInt();
@@ -172,9 +172,9 @@ public final class Main {
             if (!genesGiven)
                 cmdLineOptions.setTimeLimit(timelimit);
             if (Math.abs(average(scores)-prevAverage) < 0.7 && i%10 != 0)
-                sigma += 0.0005;
-            else if (sigma > 0.012)
-                sigma = 0.005;
+                sigma += 0.001;
+            else if (sigma > initSigma + 0.1)
+                sigma = initSigma;
             else
                 sigma = Math.max(sigma - 0.001, 0.0001);
             System.out.println(i + " " + average(scores) + "," + Double.toString(sigma).substring(0, Math.min(5, Double.toString(sigma).length())));
@@ -190,6 +190,7 @@ public final class Main {
             for (int j = 0; j < c; j++) {
                 value = 0;
                 jk currAgent = new jk(children[j]);
+                boolean completed[] = new boolean[numSeeds];
                 for (int k = 0; k < numSeeds; k++) {
                     cmdLineOptions.setVisualization(j==0 && i%3 == 0 && k == 0);
                     cmdLineOptions.setLevelRandSeed(seeds[k]);
@@ -198,7 +199,15 @@ public final class Main {
                     basicTask.runOneEpisode();
                     float tempVal = basicTask.getEnvironment().getEvaluationInfo().computeWeightedFitness(sov);
                     if (basicTask.getEnvironment().getEvaluationInfo().distancePassedCells == 256) {
-                        System.out.println("WIN" + k);
+                        completed[k] = true;
+                        boolean test = true;
+                        for (int m = 0; m < numSeeds; m++){
+                            test = test && completed[m];
+                        }
+                        if (test){
+                            System.out.println("all levels completed!");
+                            System.exit(0);
+                        }
                         value += 1000;
                     }
                     value +=  nb2i(tempVal%500 - (float)(6.4) < .02) * tempVal;
