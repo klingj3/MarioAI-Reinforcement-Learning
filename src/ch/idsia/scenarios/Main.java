@@ -115,14 +115,14 @@ public final class Main {
             }
         }
 
-        int generations = 500;
+        int generations = 1000;
         int c = 100;
         int p = 20;
         Random r2 = new Random();
 
 
-        double mutateLevel = 0.0015;
-        double crossoverLevel = 0.5;
+        double mutateLevel = 0.0016;
+        double crossoverLevel = 0.2;
         double[][] parents = new double[p][len];
         float[] scores = new float[p];
         for (int i = 0; i < p; i++){
@@ -134,7 +134,7 @@ public final class Main {
         int numSeeds = 5;
         int[] seeds = new int[numSeeds];
         for (int i = 0; i < numSeeds; i++){
-            seeds[i] = r2.nextInt(1000);
+            seeds[i] = r2.nextInt(917);
         }
 
         //Establishing junk.
@@ -163,11 +163,11 @@ public final class Main {
         for (int i = 0; i < generations; ++i) {
             cmdLineOptions.setVisualization(false);
             cmdLineOptions.setLevelDifficulty(0);
-            timelimit = Math.min(Math.max(5, i/2), 100);
+            timelimit = Math.min(Math.max(20, i/2), 100);
             if (!genesGiven)
                 cmdLineOptions.setTimeLimit(timelimit);
-            if (average(scores) == prevAverage && i%10 != 0)
-                mutateLevel += 0.0002;
+            if (average(scores) == prevAverage && i%10 != 0 && i > 16)
+                mutateLevel += 0.0005;
             else
                 mutateLevel = 0.0015;
             System.out.println(average(scores));// + " with mutation rate " + mutateLevel*100 + "% and crossover rate " + crossoverLevel*100 + "%");
@@ -192,6 +192,10 @@ public final class Main {
                     basicTask.reset(cmdLineOptions);
                     basicTask.runOneEpisode();
                     float tempVal = basicTask.getEnvironment().getEvaluationInfo().computeWeightedFitness(sov);
+                    if (basicTask.getEnvironment().getEvaluationInfo().distancePassedCells == 256) {
+                        System.out.println("WIN" + k);
+                        value += 1000;
+                    }
                     value +=  nb2i(tempVal%500 - (float)(6.4) < .02) * tempVal;
                 }
                 value = value / numSeeds;
