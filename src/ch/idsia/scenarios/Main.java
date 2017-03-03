@@ -1,6 +1,9 @@
 package ch.idsia.scenarios;
 
 import ch.idsia.agents.Agent;
+import ch.idsia.agents.controllers.ForwardAgent;
+import ch.idsia.agents.controllers.ForwardJumpingAgent;
+import ch.idsia.agents.controllers.NeuralNetwork2;
 import ch.idsia.agents.controllers.jk;
 import ch.idsia.benchmark.mario.environments.Environment;
 import ch.idsia.benchmark.tasks.BasicTask;
@@ -76,7 +79,8 @@ public final class Main {
             int i = 0;
             Scanner scanner = new Scanner(new File(filename));
             while (scanner.hasNextDouble() && i < ret.length) {
-                ret[i++] = (double) scanner.nextDouble();
+                double temp = scanner.nextDouble();
+                ret[i++] = temp;
             }
         } catch (IOException e) {
 
@@ -97,7 +101,7 @@ public final class Main {
     }
 
     public static void main(String[] args) {
-        boolean genesGiven = true;
+        boolean genesGiven = false;
         boolean elitism = false;
 
         double[] parentA;
@@ -120,7 +124,7 @@ public final class Main {
             }
         }
 
-        int generations = 500;
+        int generations = 1000;
         int c = 100;
         int p = 20;
         Random r2 = new Random();
@@ -136,7 +140,7 @@ public final class Main {
         double[][] children = new double[c][len+5];
 
         //Establishes seeds.
-        int numSeeds = 5;
+        int numSeeds = 10;
         int[] seeds = new int[numSeeds];
         for (int i = 0; i < numSeeds; i++){
             seeds[i] = r2.nextInt();
@@ -190,11 +194,11 @@ public final class Main {
             }
             for (int j = 0; j < c; j++) {
                 value = 0;
-                jk currAgent = new jk(children[j]);
+                ForwardJumpingAgent currAgent = new ForwardJumpingAgent();
                 boolean completed[] = new boolean[numSeeds];
                 for (int k = 0; k < numSeeds; k++) {
-                    cmdLineOptions.setVisualization(j==0 && i%3 == 0 && k == 0);
-                    cmdLineOptions.setLevelRandSeed(seeds[k]);
+                   // cmdLineOptions.setVisualization(j==0 && i%3 == 0 && k == 0);
+                    cmdLineOptions.setLevelRandSeed(r2.nextInt());
                     cmdLineOptions.setAgent(currAgent);
                     basicTask.reset(cmdLineOptions);
                     basicTask.runOneEpisode();
@@ -239,7 +243,7 @@ public final class Main {
             }
         }
 
-        write(bestEver, "best.txt");;
+        write(bestEver, "best.txt");
 
 
         //System.out.println("Average fitness is " + average / totalCount + "\n");

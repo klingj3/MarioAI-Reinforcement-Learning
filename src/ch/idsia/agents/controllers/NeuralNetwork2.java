@@ -4,8 +4,6 @@ import ch.idsia.agents.Agent;
 import ch.idsia.benchmark.mario.engine.sprites.Mario;
 import ch.idsia.benchmark.mario.environments.Environment;
 
-import javax.swing.*;
-
 /**
  * Created by IntelliJ IDEA.
  * User: Sergey Karakovskiy
@@ -14,7 +12,7 @@ import javax.swing.*;
  * Package: ch.idsia.agents.controllers;
  */
 
-public class jk extends BasicMarioAIAgent implements Agent
+public class NeuralNetwork2 extends BasicMarioAIAgent implements Agent
 {
 
 	/**NUM BUTTONS*/
@@ -26,14 +24,14 @@ public class jk extends BasicMarioAIAgent implements Agent
 	int jump;
 	private double[] genes;
 
-	public jk()
+	public NeuralNetwork2()
 	{
 		super("jk");
 		reset();
 		jump = 0;
 	}
 
-	public jk(double[] geneList)
+	public NeuralNetwork2(double[] geneList)
 	{
 		super("jk");
 		genes = geneList;
@@ -63,54 +61,32 @@ public class jk extends BasicMarioAIAgent implements Agent
 		int gene = 0;
 		int horWidth = 2;
 		int verWidth = 2;
-		int geneSize = 5*5*6*nb;
+		int geneSize = 6*nb;
 
 		double hiddenLayer[] = new double[nb];
 		//System.out.println(geneSize);
 		if (isMarioAbleToJump) {
-			for (int i = 9 - horWidth; i <= 9 + horWidth; ++i) {
-				for (int j = 9 - (verWidth); j <= 9 + (verWidth); ++j) {
-					// 0 			 = nothing
-					//-60, -24, -85  = can't pass through
-					// 2, 3 		 = coin, mushroom, fire flower
-					// 80			 = jumpable enemy
-					// -62			 = Soft obstacle
-					// 93			 = Spiky
-					for (int l = 0; l < nb; ++l) {
-						hiddenLayer[l] += (genes[gene++]*b2i(scene[i][j] == 0));
-						hiddenLayer[l] += (genes[gene++]*b2i(scene[i][j] == -60 || scene[i][j] == -24 || scene[i][j] == -85));
-						hiddenLayer[l] += (genes[gene++]*b2i(scene[i][j] == 2 || scene[i][j] == 3));
-						hiddenLayer[l] += (genes[gene++]*b2i(scene[i][j] == 80));
-						hiddenLayer[l] += (genes[gene++])*b2i(scene[i][j] == -62);
-						hiddenLayer[l] += (genes[gene++])*b2i(scene[i][j] == 93);
-					}
-				}
+			for (int l = 0; l < nb; ++l) {
+				hiddenLayer[l] += (genes[gene++]*b2i(gapAhead(scene)));
+				hiddenLayer[l] += (genes[gene++]*b2i(enemyAhead(scene)));
+				hiddenLayer[l] += (genes[gene++]*b2i(obstacleAhead(scene)));
+				hiddenLayer[l] += (genes[gene++]*b2i(goalAhead(scene)));
+				hiddenLayer[l] += (genes[gene++])*b2i(safeToJump(scene));
 			}
 		}
 		else{
-			gene += geneSize;
-			for (int i = 9 - horWidth; i <= 9 + horWidth; ++i) {
-				for (int j = 9 - (verWidth); j <= 9 + (verWidth); ++j) {
-					// 0 			 = nothing
-					//-60, -24, -85  = can't pass through
-					// 2, 3 		 = coin, mushroom, fire flower
-					// 80			 = jumpable enemy
-					// -62			 = Soft obstacle
-
-					for (int l = 0; l < nb; ++l) {
-						hiddenLayer[l] += (genes[gene++]*b2i(scene[i][j] == 0));
-						hiddenLayer[l] += (genes[gene++]*b2i(scene[i][j] == -60 || scene[i][j] == -24 || scene[i][j] == -85));
-						hiddenLayer[l] += (genes[gene++]*b2i(scene[i][j] == 2 || scene[i][j] == 3));
-						hiddenLayer[l] += (genes[gene++]*b2i(scene[i][j] == 80));
-						hiddenLayer[l] += (genes[gene++])*b2i(scene[i][j] == -62);
-						hiddenLayer[l] += (genes[gene++])*b2i(scene[i][j] == 93);
-					}
-				}
+			for (int l = 0; l < nb; ++l) {
+				hiddenLayer[l] += (genes[gene++]*b2i(gapAhead(scene)));
+				hiddenLayer[l] += (genes[gene++]*b2i(enemyAhead(scene)));
+				hiddenLayer[l] += (genes[gene++]*b2i(obstacleAhead(scene)));
+				hiddenLayer[l] += (genes[gene++]*b2i(goalAhead(scene)));
+				hiddenLayer[l] += (genes[gene++])*b2i(safeToJump(scene));
+				hiddenLayer[l] += (genes[gene++])*1;
 			}
 		}
 		for (int i = 0; i < nb; i++){
 			//System.out.println(genes[genes.length-5 + 1]);
-			if (hiddenLayer[i] >  0.25){
+			if (hiddenLayer[i] >  0.1){
 				action[i] = true;
 			}
 			//if (hiddenLayer[i] < -0.2){
@@ -120,6 +96,49 @@ public class jk extends BasicMarioAIAgent implements Agent
 		action[Mario.KEY_JUMP] = action[Mario.KEY_JUMP] && !(++jump >= 30);
 		action[Mario.KEY_DOWN] = false;
 		return action;
+	}
+
+	public boolean safeToJump(byte[][] scene){
+		boolean ret = true;
+		for (int i = 9 ; i < 12; i++){
+			for (int j = 7; j < 9; j++){
+				ret = ret && (scene[i][j] != 80 && scene[i][j] != 93);
+			}
+		}
+		return ret;
+	}
+
+	public boolean gapAhead(byte[][] scene){
+		for (int j = 5; j < 18; j++){
+			if (scene[10][j] == -60 || scene[10][j] == -85 || scene[10][j] == -24)
+				return false;
+		}
+		return true;
+	}
+
+	public boolean enemyAhead(byte[][] scene){
+		for (int i = 9; i < 12; i++){
+			for (int j = 7; j < 10; j++){
+				if (scene[i][j] == 80 || scene[i][j] == 93)
+					return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean goalAhead(byte[][] scene){
+		for (int i = 9; i < 12; i++){
+			for (int j = 7; j < 10; j++){
+				if (scene[i][j] == 2 || scene[i][j] == 3)
+					return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean obstacleAhead(byte[][] scene){
+		boolean ret = (scene[10][9] != 0);
+		return ret;
 	}
 
 	public void reset()
