@@ -140,7 +140,7 @@ public final class Main {
         double[][] children = new double[c][len+5];
 
         //Establishes seeds.
-        int numSeeds = 10;
+        int numSeeds = 1;
         int[] seeds = new int[numSeeds];
         for (int i = 0; i < numSeeds; i++){
             seeds[i] = r2.nextInt();
@@ -194,7 +194,7 @@ public final class Main {
             }
             for (int j = 0; j < c; j++) {
                 value = 0;
-                ForwardJumpingAgent currAgent = new ForwardJumpingAgent();
+                jk currAgent = new jk(children[j]);
                 boolean completed[] = new boolean[numSeeds];
                 for (int k = 0; k < numSeeds; k++) {
                    // cmdLineOptions.setVisualization(j==0 && i%3 == 0 && k == 0);
