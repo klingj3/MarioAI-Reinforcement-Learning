@@ -57,11 +57,12 @@ public final class Main {
         final BasicTask basicTask = new BasicTask(cmdLineOptions);
         final MarioCustomSystemOfValues sov = new MarioCustomSystemOfValues();
 
+        cmdLineOptions.setVisualization(true);
+        QLearningAgent agent = new QLearningAgent();
+        cmdLineOptions.setAgent(agent);
+        basicTask.reset(cmdLineOptions);
+
         for (int i = 0; i < generations; ++i) {
-            cmdLineOptions.setVisualization(true);
-            QLearningAgent agent = new QLearningAgent();
-            cmdLineOptions.setAgent(agent);
-            basicTask.reset(cmdLineOptions);
             basicTask.runOneEpisode();
             float tempVal = basicTask.getEnvironment().getEvaluationInfo().computeWeightedFitness(sov);
             System.out.println(tempVal);

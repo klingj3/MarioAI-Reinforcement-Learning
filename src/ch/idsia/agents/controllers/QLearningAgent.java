@@ -3,6 +3,7 @@ package ch.idsia.agents.controllers;
 import ch.idsia.agents.Agent;
 import ch.idsia.benchmark.mario.engine.sprites.Mario;
 import ch.idsia.benchmark.mario.environments.Environment;
+import java.util.HashMap;
 
 /**
  * Created by IntelliJ IDEA.
@@ -14,28 +15,64 @@ import ch.idsia.benchmark.mario.environments.Environment;
 
 public class QLearningAgent extends BasicMarioAIAgent implements Agent
 {
+	HashMap hm;
+
+	// 0 			 = nothing
+	//-60, -24, -85  = can't pass through
+	// 2, 3 		 = coin, mushroom, fire flower
+	// 80			 = jumpable enemy
+	// -62			 = Soft obstacle
+	// 93			 = Spiky -- Irrlevant for level 0
+
+	private boolean isEnemy(int x, int y, byte[][] scene){
+		return (scene[x][y] == 80);
+	}
+
+	private boolean isObstacle(int x, int y, byte[][] scene){
+		return (scene[x][y] == -60 || scene[x][y] == -85 || scene[x][y] == -24);
+	}
+
+
+	private boolean isGoal(int x, int y, byte[][] scene){
+		return (scene[x][y] == 2 || scene[x][y] == 3);
+	}
+
+	private boolean isSoftObstacle(int x, int y, byte[][] scene){
+		return (scene[x][y] == -62);
+	}
 
 	/** Boolean functions */
+	private boolean enemyInRadius(int radius, byte[][] scene){
+		for (int i = 9-radius; i < 9+radius; i++){
+			for (int j = 9-radius; j < 9+radius; j++){
+				if (isEnemy(i, j, scene)){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
+	private boolean obstacleAhead(byte[][] scene){
+		return (isObstacle(10, 8, scene)) || (isObstacle(10, 9, scene)) || (isObstacle(10, 7, scene));
+	}
 
 	/**NUM BUTTONS*/
 	private final int nb = 5;
 
-	//Num square types
-	private final int nst = 9;
-	private double[] genes;
-
 	public QLearningAgent()
 	{
 		super("jk");
+		hm = new HashMap();
 		reset();
 	}
 
-	public QLearningAgent(double[] QLearningTable)
-	{
-		super("jk");
-		genes = QLearningTable;
-		reset();
+	//boolean to string
+	private String b2s(boolean b){
+		if (b)
+			return "1";
+		else
+			return "0";
 	}
 
 	//Boolean to int
@@ -45,10 +82,34 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 		return 0;
 	}
 
+	//Hashes the boolean values to an integer
+	public int hash(boolean[] arr){
+		String s = "";
+		for (int i = 0; i < arr.length; i++){
+			s += b2s(arr[i]);
+		}
+		return Integer.parseInt(s, 2);
+	}
+
 	public boolean[] getAction()
 	{
 		byte[][] scene = mergedObservation;
 
+		boolean enemyInRadius1 = enemyInRadius(1, scene);
+		boolean enemyInRadius2 = enemyInRadius(2, scene);
+		boolean enemyInRadius3 = enemyInRadius(3, scene);
+
+		boolean obstacleAhead = obstacleAhead(scene);
+
+		boolean[] arr = {enemyInRadius1, enemyInRadius2, enemyInRadius3, obstacleAhead};
+		int hash = hash(arr);
+
+		if (hm.containsKey(hash)){
+
+		}
+		else{
+
+		}
 
 		for (int i = 0; i < nb; i++){
 			action[i] = false;
