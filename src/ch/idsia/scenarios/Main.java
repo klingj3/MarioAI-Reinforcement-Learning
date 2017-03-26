@@ -52,7 +52,7 @@ public final class Main {
         int generations = 1000;
 
         //Establishing junk.
-        final String argsString = "-vis on -fps 100 -tl 200 -ld 0 -ag ch.idsia.agents.controllers.QLearningAgent";
+        final String argsString = "-vis on -fps 100 -tl 75 -ld 0 -ag ch.idsia.agents.controllers.QLearningAgent";
         final CmdLineOptions cmdLineOptions = new CmdLineOptions(argsString);
         final BasicTask basicTask = new BasicTask(cmdLineOptions);
         final MarioCustomSystemOfValues sov = new MarioCustomSystemOfValues();
@@ -64,7 +64,7 @@ public final class Main {
         double epsilon = 0.03;
         double minEpsilon = 0.01;
         for (int i = 0; i < generations; ++i) {
-            cmdLineOptions.setVisualization((i)%7894132 == 0);
+            cmdLineOptions.setVisualization((i+1)%100 == 0 && i > 500);
             epsilon = Math.max(minEpsilon, epsilon-(0.001));
 
             agent.setEpsilon(epsilon);

@@ -129,6 +129,9 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 		}
 		int numBooleans = 8;
 
+		double learningRate = 0.7;
+		double discountFactor = 0.3;
+
 		byte[][] scene = mergedObservation;
 
 		boolean enemyInRadius1 = enemyInRadius(1, scene);
@@ -136,7 +139,7 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 		boolean enemyInRadius3 = enemyInRadius(3, scene);
 		boolean onPipe = scene[9][10] == -85;
 
-		boolean obstacleAhead = obstacleAhead(scene);
+		boolean obstacleAhead = obstacleAhead(scene) || (!isMarioOnGround && isObstacle(10, 10, scene));
 		boolean stuck = false;
 
 		boolean[] arr = {enemyInRadius1, enemyInRadius2, enemyInRadius3, obstacleAhead, stuck, isMarioOnGround, isMarioAbleToJump, onPipe};
@@ -154,10 +157,6 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 				reward += Math.max(0.00, yChange);
 			}
 
-			if (marioMode != 2){
-				reward = 0;
-			}
-
 			ArrayList<Double> arrList = (ArrayList<Double>)hm.get(previousState);
 			hm.remove(previousState);
 			ArrayList<Double> newList = new ArrayList<Double>();
@@ -167,15 +166,14 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 					newList.add(arrList.get(i));
 				}
 				else{
-					double average = 0;
+					double maxValue = 0;
 					if (hm.containsKey(hash)){
 						ArrayList<Double> temp = (ArrayList<Double>)hm.get(hash);
 						for (int j = 0; j < nb; j++){
-							average += Math.max(average, temp.get(j));
+							maxValue = Math.max(maxValue, temp.get(j));
 						}
 					}
-					average = average/nb;
-					newList.add( reward*.8 + average*.2 );
+					newList.add(arrList.get(i) + learningRate*(reward + discountFactor*(maxValue) - arrList.get(i)));
 				}
 			}
 
