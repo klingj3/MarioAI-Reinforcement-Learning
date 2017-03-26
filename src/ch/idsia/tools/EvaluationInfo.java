@@ -76,8 +76,6 @@ public float computeBasicFitness()
 public float computeWeightedFitness(SystemOfValues sov)
 {
     //System.out.println(distancePassedCells);
-    if (distancePassedCells <= 2)
-        return 0;
     return
             distancePassedPhys * sov.distance +
                     flowersDevoured * sov.flowerFire +
