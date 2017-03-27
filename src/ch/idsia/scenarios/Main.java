@@ -62,17 +62,16 @@ public final class Main {
         QLearningAgent agent = new QLearningAgent();
         cmdLineOptions.setAgent(agent);
         basicTask.reset(cmdLineOptions);
-        double epsilon = 0.01;
-        double minEpsilon = 0.001;
+        float epsilon = (float)0.005;
+        float minEpsilon = (float)0.0005;
         for (int i = 0; i < generations; ++i) {
-            epsilon = Math.max(minEpsilon, epsilon-(0.00001));
-            cmdLineOptions.setVisualization(i%100==0);
+            //epsilon = Math.max(minEpsilon, epsilon-(float)(0.00001));
 
             agent.setEpsilon(epsilon);
             basicTask.reset(cmdLineOptions);
             basicTask.runOneEpisode();
             float tempVal = basicTask.getEnvironment().getEvaluationInfo().computeWeightedFitness(sov);
-            System.out.println(i + ",\t" + tempVal);
+            System.out.println(i + ",\t" + tempVal); //+ ",\t" + epsilon);
         }
 
 //        write(bestEver, "best.txt");
