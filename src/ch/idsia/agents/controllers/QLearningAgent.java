@@ -186,7 +186,6 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 					}
 					double tempOldValue = arrList.get(i);
 					newList.add(arrList.get(i) + learningRate*(reward + discountFactor*(maxValue) - arrList.get(i)));
-					//System.out.println("Old value : " + tempOldValue + " New value: " + newList.get(i));
 				}
 			}
 

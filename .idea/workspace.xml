@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="21a0aecb-1c33-4b2d-97e1-9c9bc945c119" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MarioAI+Benchmark/ch/idsia/scenarios/Main.class" afterPath="$PROJECT_DIR$/out/production/MarioAI+Benchmark/ch/idsia/scenarios/Main.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MarioAI+Benchmark/ch/idsia/tools/EvaluationInfo.class" afterPath="$PROJECT_DIR$/out/production/MarioAI+Benchmark/ch/idsia/tools/EvaluationInfo.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ch/idsia/agents/controllers/QLearningAgent.java" afterPath="$PROJECT_DIR$/src/ch/idsia/agents/controllers/QLearningAgent.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ch/idsia/scenarios/Main.java" afterPath="$PROJECT_DIR$/src/ch/idsia/scenarios/Main.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -37,13 +34,13 @@
       <file leaf-file-name="QLearningAgent.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ch/idsia/agents/controllers/QLearningAgent.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="188" column="22" lean-forward="false" selection-start-line="188" selection-start-column="22" selection-end-line="188" selection-end-column="22" />
+            <state relative-caret-position="285">
+              <caret line="188" column="0" lean-forward="false" selection-start-line="188" selection-start-column="0" selection-end-line="188" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#3944#3952#0" expanded="true" />
-                <element signature="e#4948#4957#0" expanded="true" />
-                <element signature="e#5633#5641#0" expanded="true" />
+                <element signature="e#4856#4865#0" expanded="true" />
+                <element signature="e#5541#5549#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -726,7 +723,14 @@
       <option name="project" value="LOCAL" />
       <updated>1490385268082</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Getting into the 4000s, but still too volatile.">
+      <created>1490658986577</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1490658986577</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -774,7 +778,8 @@
     <MESSAGE value="Basic evolving sigma." />
     <MESSAGE value="5 by5 grid" />
     <MESSAGE value="Some small progress made." />
-    <option name="LAST_COMMIT_MESSAGE" value="Some small progress made." />
+    <MESSAGE value="Getting into the 4000s, but still too volatile." />
+    <option name="LAST_COMMIT_MESSAGE" value="Getting into the 4000s, but still too volatile." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1147,13 +1152,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ch/idsia/agents/controllers/QLearningAgent.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="188" column="22" lean-forward="false" selection-start-line="188" selection-start-column="22" selection-end-line="188" selection-end-column="22" />
+        <state relative-caret-position="285">
+          <caret line="188" column="0" lean-forward="false" selection-start-line="188" selection-start-column="0" selection-end-line="188" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#3944#3952#0" expanded="true" />
-            <element signature="e#4948#4957#0" expanded="true" />
-            <element signature="e#5633#5641#0" expanded="true" />
+            <element signature="e#4856#4865#0" expanded="true" />
+            <element signature="e#5541#5549#0" expanded="true" />
           </folding>
         </state>
       </provider>
