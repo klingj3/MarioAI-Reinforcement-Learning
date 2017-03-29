@@ -41,20 +41,20 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 	// -62			 = Soft obstacle
 	// 93			 = Spiky -- Irrlevant for level 0
 
-	private boolean isEnemy(int x, int y, byte[][] scene){
+	private boolean isEnemy(int y, int x, byte[][] scene){
 		return (scene[x][y] == 80);
 	}
 
-	private boolean isObstacle(int x, int y, byte[][] scene){
+	private boolean isObstacle(int y, int x, byte[][] scene){
 		return (scene[x][y] == -60 || scene[x][y] == -85 || scene[x][y] == -24);
 	}
 
 
-	private boolean isGoal(int x, int y, byte[][] scene){
+	private boolean isGoal(int y, int x, byte[][] scene){
 		return (scene[x][y] == 2 || scene[x][y] == 3);
 	}
 
-	private boolean isSoftObstacle(int x, int y, byte[][] scene){
+	private boolean isSoftObstacle(int y, int x, byte[][] scene){
 		return (scene[x][y] == -62);
 	}
 
@@ -71,7 +71,7 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 	}
 
 	private boolean obstacleAhead(byte[][] scene){
-		return (isObstacle(10, 8, scene)) || (isObstacle(10, 9, scene)) || (isObstacle(10, 7, scene) || scene[10][9] != 0);
+		return (isObstacle(10, 8, scene)) || (isObstacle(10, 9, scene)) || (isObstacle(10, 7, scene));
 	}
 
 	/**NUM BUTTONS*/
@@ -133,7 +133,6 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 		for (int i = 0; i < nb; i++){
 			action[i] = false;
 		}
-		int numBooleans = 8;
 
 		double learningRate = 0.9;
 		double discountFactor = 0.1;
@@ -141,13 +140,14 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 		byte[][] scene = mergedObservation;
 
 		boolean enemyInRadius1 = enemyInRadius(1, scene);
-		boolean enemyInRadius2 = enemyInRadius(2, scene);
 		boolean enemyInRadius3 = enemyInRadius(3, scene);
+		boolean enemyInRadius5 = enemyInRadius(5, scene);
 		boolean onPipe = scene[9][10] == -85;
+		boolean isFire = marioStatus == 2;
 
-		boolean obstacleAhead = obstacleAhead(scene) || (!isMarioOnGround && isObstacle(10, 10, scene));
+		boolean obstacleAhead = obstacleAhead(scene); //|| (!isMarioOnGround && isObstacle(10, 10, scene));
 
-		boolean[] arr = {enemyInRadius1, enemyInRadius2, enemyInRadius3, obstacleAhead, stuck, isMarioOnGround, isMarioAbleToJump, onPipe};
+		boolean[] arr = {isFire, enemyInRadius1, enemyInRadius3, enemyInRadius5, obstacleAhead, stuck, isMarioOnGround, isMarioAbleToJump, onPipe};
 		int hash = hash(arr);
 
 		/* REWARD SECTION **/
@@ -160,13 +160,19 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 			xChange = marioFloatPos[0] - previousX;
 			yChange = marioFloatPos[1] - previousY;
 			int numEnemiesKilled = getKillsTotal - previousKillsTotal;
-			reward +=  xChange*10 + 10*numEnemiesKilled;
+
+			reward +=  xChange*100 + 100*numEnemiesKilled;
 			if (marioStatus < previousStatus || previousAction1 == -1){
-				reward -= 500;
+				reward -= 5000;
 			}
 			if (Math.max(0.00, xChange) > 0 && isMarioOnGround){
 				reward += Math.max(0.00, yChange);
 			}
+			if (xChange < 0.1)
+				constXChange++;
+			else
+				constXChange = 0;
+			reward -= 10*b2i(stuck);
 
 			ArrayList<Double> arrList = (ArrayList<Double>)hm.get(previousState);
 			hm.remove(previousState);
@@ -184,18 +190,13 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 							maxValue = Math.max(maxValue, temp.get(j));
 						}
 					}
-					double tempOldValue = arrList.get(i);
 					newList.add(arrList.get(i) + learningRate*(reward + discountFactor*(maxValue) - arrList.get(i)));
 				}
 			}
 
 			hm.put(previousState, newList);
-			if (xChange < 0.1)
-				constXChange++;
-			else
-				constXChange = 0;
 
-			stuck = (xChange == 0);
+			stuck = (constXChange > 5);
 		}
 
 
