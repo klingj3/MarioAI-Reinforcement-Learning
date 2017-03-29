@@ -163,7 +163,7 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 
 			reward +=  xChange*100 + 100*numEnemiesKilled;
 			if (marioStatus < previousStatus || previousAction1 == -1){
-				reward -= 5000;
+				reward -= 5000; //Punishment for being hurt.
 			}
 			if (Math.max(0.00, xChange) > 0 && isMarioOnGround){
 				reward += Math.max(0.00, yChange);
