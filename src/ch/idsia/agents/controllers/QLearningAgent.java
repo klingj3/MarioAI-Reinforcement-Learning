@@ -161,7 +161,7 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 			yChange = marioFloatPos[1] - previousY;
 			int numEnemiesKilled = getKillsTotal - previousKillsTotal;
 
-			reward +=  xChange*100 + 100*numEnemiesKilled;
+			reward +=  xChange*10 + 100*numEnemiesKilled;
 			if (marioStatus < previousStatus || previousAction1 == -1){
 				reward -= 5000; //Punishment for being hurt.
 			}
@@ -254,6 +254,7 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 		for (int i = 0; i < nb; i++){
 			if (action[i]){
 				previousAction1 = i;
+				break;
 			}
 		}
 		if (previousAction1 == -1){
