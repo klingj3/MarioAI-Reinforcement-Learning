@@ -49,7 +49,7 @@ public final class Main {
 
     public static void main(String[] args) {
 
-        int generations = 10000;
+        int generations = 1000;
 
         //Establishing junk.
         final String argsString = "-vis on -fps 100 -tl 100 -ld 0 -ag ch.idsia.agents.controllers.QLearningAgent";
@@ -59,12 +59,19 @@ public final class Main {
 
         cmdLineOptions.setLevelRandSeed(6);
         cmdLineOptions.setVisualization(false);
+        double epsilon = (float)0.01;
+
+        double learningRate = 0.2;
+        double discountFactor = 0.7;
+
+        float average = 0;
+
         QLearningAgent agent = new QLearningAgent();
+        agent.setLearning(learningRate);
+        agent.setDiscount(discountFactor);
         cmdLineOptions.setAgent(agent);
         basicTask.reset(cmdLineOptions);
-        double epsilon = (float)0.01;
-        double minEpsilon = (float)0.0005;
-        float average = 0;
+
         for (int i = 0; i < generations; ++i) {
             //epsilon = Math.max(minEpsilon, epsilon-(0.00001));
             //cmdLineOptions.setVisualization((i+1)%50 == 0);
@@ -73,7 +80,7 @@ public final class Main {
             basicTask.runOneEpisode();
             float tempVal = basicTask.getEnvironment().getEvaluationInfo().computeWeightedFitness(sov);
             average += tempVal;
-            System.out.println(i + ",\t" + tempVal + ",\t " + average/(float)(i)); //+ ",\t" + epsilon);
+            System.out.println(i + "\t" + tempVal + "\t" + average/i);
         }
 
 //        write(bestEver, "best.txt");

@@ -18,11 +18,14 @@ import java.util.HashMap;
 public class QLearningAgent extends BasicMarioAIAgent implements Agent
 {
 	HashMap hm;
+
 	double epsilon;
+	double learningRate;
+	double discountFactor;
+
 	int previousState;
 	int previousKillsTotal;
-	int previousAction1;
-	int previousAction2;
+	int previousAction;
 	int constXChange;
 	int previousStatus;
 
@@ -33,6 +36,8 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 	float previousY;
 
 	boolean stuck;
+
+	ArrayList<boolean[]> actionSets;
 
 	// 0 			 = nothing
 	//-60, -24, -85  = can't pass through
@@ -86,16 +91,25 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 		previousKillsTotal = -1;
 		previousX = -1;
 		previousY = -1;
-		previousAction1 = -1;
+		previousAction = -1;
 		constXChange = 0;
 		previousStatus = 0;
 		stuck = false;
+		learningRate = 0.3;
+		discountFactor = 0.9;
 
 		randomCount = 0;
 		totalCount = 0;
-
 		reset();
 	}
+
+	/*Modifying core parameters*/
+
+	public void setDiscount(double newD) {discountFactor = newD;}
+
+	public void setLearning(double newL) {learningRate = newL;}
+
+	/*End of parameters*/
 
 	public void setEpsilon(double newEpsilon){
 		epsilon = newEpsilon;
@@ -134,9 +148,6 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 			action[i] = false;
 		}
 
-		double learningRate = 0.9;
-		double discountFactor = 0.1;
-
 		byte[][] scene = mergedObservation;
 
 		boolean enemyInRadius1 = enemyInRadius(1, scene);
@@ -161,8 +172,8 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 			yChange = marioFloatPos[1] - previousY;
 			int numEnemiesKilled = getKillsTotal - previousKillsTotal;
 
-			reward +=  xChange*10 + 100*numEnemiesKilled;
-			if (marioStatus < previousStatus || previousAction1 == -1){
+			reward +=  xChange*100 + 10*numEnemiesKilled;
+			if (marioStatus < previousStatus || previousAction == -1){
 				reward -= 5000; //Punishment for being hurt.
 			}
 			if (Math.max(0.00, xChange) > 0 && isMarioOnGround){
@@ -179,7 +190,7 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 			ArrayList<Double> newList = new ArrayList<Double>();
 
 			for (int i = 0; i < nb; i++){
-				if (i != previousAction1){
+				if (i != previousAction){
 					newList.add(arrList.get(i));
 				}
 				else{
@@ -190,7 +201,9 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 							maxValue = Math.max(maxValue, temp.get(j));
 						}
 					}
-					newList.add(arrList.get(i) + learningRate*(reward + discountFactor*(maxValue) - arrList.get(i)));
+					double newQ = (1-learningRate)*(arrList.get(previousAction)) + learningRate*
+							(reward+discountFactor*maxValue);
+					newList.add(newQ);
 				}
 			}
 
@@ -250,16 +263,16 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 		previousStatus = marioStatus;
 		if (isMarioOnGround)
 			previousY = marioFloatPos[1];
-		previousAction1 = -1;
+		previousAction = -1;
 		for (int i = 0; i < nb; i++){
 			if (action[i]){
-				previousAction1 = i;
+				previousAction = i;
 				break;
 			}
 		}
-		if (previousAction1 == -1){
-			previousAction1 = (int)(Math.random()*nb);
-			action[previousAction1] = true;
+		if (previousAction == -1){
+			previousAction = (int)(Math.random()*nb);
+			action[previousAction] = true;
 		}
 
 		return action;
