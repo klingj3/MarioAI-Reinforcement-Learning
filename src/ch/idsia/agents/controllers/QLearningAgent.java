@@ -18,6 +18,7 @@ import java.util.HashMap;
 public class QLearningAgent extends BasicMarioAIAgent implements Agent
 {
 	HashMap hm;
+	HashMap newHm;
 
 	double epsilon;
 	double learningRate;
@@ -194,7 +195,7 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 		boolean isFire = marioStatus == 2;
 		int direction = 0;
 
-		boolean obstacleAhead = obstacleAhead(scene); //|| (!isMarioOnGround && isObstacle(10, 10, scene));
+		boolean obstacleAhead = obstacleAhead(scene) || scene[9][10] != 0;
 
 		boolean[] arr = {isFire,
 				enemyInRadius1,
@@ -228,6 +229,7 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 			hash += distanceToClosestEnemy(scene);
 
 			reward +=  xChange*100 + 10*numEnemiesKilled;
+
 			if (marioStatus < previousStatus){
 				reward -= 5000; //Punishment for being hurt.
 			}
@@ -238,7 +240,7 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 				constXChange++;
 			else
 				constXChange = 0;
-			reward -= 10*b2i(stuck);
+			//reward -= 50*b2i(stuck);
 
 			ArrayList<Double> arrList = (ArrayList<Double>)hm.get(previousState);
 			hm.remove(previousState);

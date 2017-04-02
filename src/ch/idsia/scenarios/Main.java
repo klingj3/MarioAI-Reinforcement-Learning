@@ -52,18 +52,18 @@ public final class Main {
         int generations = 1000;
 
         //Establishing junk.
-        final String argsString = "-vis on -fps 150 -tl 200 -ld 0 -ag ch.idsia.agents.controllers.QLearningAgent";
+        final String argsString = "-vis on -fps 30 -tl 200 -ld 0 -ag ch.idsia.agents.controllers.QLearningAgent";
         final CmdLineOptions cmdLineOptions = new CmdLineOptions(argsString);
         final BasicTask basicTask = new BasicTask(cmdLineOptions);
         final MarioCustomSystemOfValues sov = new MarioCustomSystemOfValues();
 
         cmdLineOptions.setLevelRandSeed(6);
         cmdLineOptions.setVisualization(false);
-        double epsilon = 0.1;
-        double minEpsilon = 0.01;
+        double epsilon = 0.3;
+        double minEpsilon = 0.1;
 
         double learningRate = 0.2;
-        double discountFactor = 0.9;
+        double discountFactor = 0.7;
 
         float average = 0;
 
@@ -74,14 +74,13 @@ public final class Main {
         basicTask.reset(cmdLineOptions);
 
         for (int i = 0; i < generations; ++i) {
-            //epsilon = Math.max(minEpsilon, epsilon-(0.0001));
-            //cmdLineOptions.setVisualization((i)%50 == 0);
+            //cmdLineOptions.setVisualization((i+1)%50 == 0);
             agent.setEpsilon(epsilon);
             basicTask.reset(cmdLineOptions);
             basicTask.runOneEpisode();
-            float tempVal = basicTask.getEnvironment().getEvaluationInfo().computeWeightedFitness(sov);
+            float tempVal = basicTask.getEnvironment().getEvaluationInfo().computeWeightedFitness();
             average += tempVal;
-            System.out.println(i + "\t" + tempVal + "\t" + average/i);
+            System.out.println(i + "\t" + tempVal + "\t" + average/(i+1));
         }
 
 //        write(bestEver, "best.txt");
