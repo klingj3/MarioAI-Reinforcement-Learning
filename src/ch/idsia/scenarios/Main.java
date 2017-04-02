@@ -8,6 +8,10 @@ import ch.idsia.tools.CmdLineOptions;
 import java.io.*;
 import java.io.FileWriter;
 import java.util.Scanner;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
 /**
  * Created by IntelliJ IDEA. User: Sergey Karakovskiy, sergey at idsia dot ch Date: Mar 17, 2010 Time: 8:28:00 AM
  * Package: ch.idsia.scenarios
@@ -52,7 +56,7 @@ public final class Main {
         int generations = 1000;
 
         //Establishing junk.
-        final String argsString = "-vis on -fps 30 -tl 200 -ld 0 -ag ch.idsia.agents.controllers.QLearningAgent";
+        final String argsString = "-vis on -fps 100 -tl 200 -ld 0 -ag ch.idsia.agents.controllers.QLearningAgent";
         final CmdLineOptions cmdLineOptions = new CmdLineOptions(argsString);
         final BasicTask basicTask = new BasicTask(cmdLineOptions);
         final MarioCustomSystemOfValues sov = new MarioCustomSystemOfValues();
@@ -73,14 +77,19 @@ public final class Main {
         cmdLineOptions.setAgent(agent);
         basicTask.reset(cmdLineOptions);
 
+        HashMap<Integer, ArrayList<Double>> hm;
+
         for (int i = 0; i < generations; ++i) {
-            //cmdLineOptions.setVisualization((i+1)%50 == 0);
+            cmdLineOptions.setVisualization((i)%250 == 0);
             agent.setEpsilon(epsilon);
             basicTask.reset(cmdLineOptions);
             basicTask.runOneEpisode();
             float tempVal = basicTask.getEnvironment().getEvaluationInfo().computeWeightedFitness();
             average += tempVal;
             System.out.println(i + "\t" + tempVal + "\t" + average/(i+1));
+            hm = agent.getHashMap();
+            agent = new QLearningAgent(hm, learningRate, discountFactor, epsilon);
+            cmdLineOptions.setAgent(agent);
         }
 
 //        write(bestEver, "best.txt");

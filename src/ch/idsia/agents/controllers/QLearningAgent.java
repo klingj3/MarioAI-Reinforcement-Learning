@@ -17,8 +17,8 @@ import java.util.HashMap;
 
 public class QLearningAgent extends BasicMarioAIAgent implements Agent
 {
-	HashMap hm;
-	HashMap newHm;
+	HashMap updatingHM; //
+	HashMap origHM;
 
 	double epsilon;
 	double learningRate;
@@ -89,7 +89,26 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 	public QLearningAgent()
 	{
 		super("jk");
-		hm = new HashMap<Integer, ArrayList<Double>>();
+		updatingHM = new HashMap<Integer, ArrayList<Double>>();
+		origHM = new HashMap<Integer, ArrayList<Double>>();
+		genericInitializers();
+	}
+
+	public QLearningAgent(HashMap<Integer, ArrayList<Double>> newHash, double lr, double df, double e)
+	{
+		super("jk");
+		updatingHM = (HashMap<Integer, ArrayList<Double>>)newHash.clone();
+		origHM = (HashMap<Integer, ArrayList<Double>>)newHash.clone();
+		genericInitializers();
+		learningRate = lr;
+		discountFactor = df;
+		epsilon = e;
+	}
+
+	public HashMap<Integer, ArrayList<Double>> getHashMap(){ return updatingHM; }
+
+	//Generic stuff for setting up the function
+	private void genericInitializers() {
 		epsilon = 0;
 		previousState = -1;
 		previousKillsTotal = -1;
@@ -242,8 +261,8 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 				constXChange = 0;
 			//reward -= 50*b2i(stuck);
 
-			ArrayList<Double> arrList = (ArrayList<Double>)hm.get(previousState);
-			hm.remove(previousState);
+			ArrayList<Double> arrList = (ArrayList<Double>) updatingHM.get(previousState);
+			updatingHM.remove(previousState);
 			ArrayList<Double> newList = new ArrayList<Double>();
 
 			for (int i = 0; i < numActions; i++){
@@ -252,8 +271,8 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 				}
 				else{
 					double maxValue = 0;
-					if (hm.containsKey(hash)){
-						ArrayList<Double> temp = (ArrayList<Double>)hm.get(hash);
+					if (updatingHM.containsKey(hash)){
+						ArrayList<Double> temp = (ArrayList<Double>) updatingHM.get(hash);
 						for (int j = 0; j < numActions; j++){
 							maxValue = Math.max(maxValue, temp.get(j));
 						}
@@ -264,7 +283,7 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 				}
 			}
 
-			hm.put(previousState, newList);
+			updatingHM.put(previousState, newList);
 
 			stuck = (constXChange > 5);
 		}
@@ -274,12 +293,12 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 
 
 		//If we've seen this state before, we use Q values to make an assessment.
-		if (hm.containsKey(hash)){
+		if (origHM.containsKey(hash)){
 			if (Math.random() > epsilon) {
 				double maxVal = -1000;
 				int maxValIndex = 1;
 				ArrayList<Integer> maxLink = new ArrayList<Integer>();
-				ArrayList<Double> arrList = (ArrayList<Double>) hm.get(hash);
+				ArrayList<Double> arrList = (ArrayList<Double>) origHM.get(hash);
 				for (int i = 0; i < numActions; i++) {
 						double temp = arrList.get(i);
 						if (temp > maxVal) {
@@ -309,7 +328,7 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 			previousAction = (int)(Math.random() * numActions);
 			randomCount++;
 			//Add this blank array to the hashmap.
-			hm.put(hash, qValues);
+			updatingHM.put(hash, qValues);
 		}
 
 		previousState = hash;
