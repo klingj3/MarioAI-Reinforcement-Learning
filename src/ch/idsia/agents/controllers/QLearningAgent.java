@@ -32,8 +32,10 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 	int randomCount;
 	int totalCount;
 
+
 	float previousX;
 	float previousY;
+	float previousGroundedY;
 
 	boolean stuck;
 
@@ -81,6 +83,7 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 
 	/**NUM BUTTONS*/
 	private final int nb = 5;
+	private final int numActions = 12;
 
 	public QLearningAgent()
 	{
@@ -91,6 +94,7 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 		previousKillsTotal = -1;
 		previousX = -1;
 		previousY = -1;
+		previousGroundedY = -1;
 		previousAction = -1;
 		constXChange = 0;
 		previousStatus = 0;
@@ -100,6 +104,7 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 
 		randomCount = 0;
 		totalCount = 0;
+
 		reset();
 	}
 
@@ -114,6 +119,18 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 	public void setEpsilon(double newEpsilon){
 		epsilon = newEpsilon;
 	}
+
+	//String boolean array
+	private boolean[] s2ba(String s){
+		boolean ret[] = {false, false, false, false, false, false};
+		for (int i = 0; i < s.length(); i++){
+			if (s.charAt(i) =='1'){
+				ret[i] = true;
+			}
+		}
+		return ret;
+	}
+
 
 	//boolean to string
 	private String b2s(boolean b){
@@ -131,12 +148,20 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 	}
 
 	//Hashes the boolean values to an integer
-	public int hash(boolean[] arr){
+	private int hash(boolean[] arr){
 		String s = "";
 		for (int i = 0; i < arr.length; i++){
 			s += b2s(arr[i]);
 		}
 		return Integer.parseInt(s, 2);
+	}
+
+	//Converts the x and y speeds into a single direction, 1-9
+	private int speedToDirection(float x, float y){
+		double angle = Math.atan2(y, x);
+		double temp = (360*angle/Math.PI+180);
+		int ret = (int)temp/(360/9);
+		return ret;
 	}
 
 	public boolean[] getAction()
@@ -155,29 +180,45 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 		boolean enemyInRadius5 = enemyInRadius(5, scene);
 		boolean onPipe = scene[9][10] == -85;
 		boolean isFire = marioStatus == 2;
+		int direction = 0;
 
 		boolean obstacleAhead = obstacleAhead(scene); //|| (!isMarioOnGround && isObstacle(10, 10, scene));
 
-		boolean[] arr = {isFire, enemyInRadius1, enemyInRadius3, enemyInRadius5, obstacleAhead, stuck, isMarioOnGround, isMarioAbleToJump, onPipe};
-		int hash = hash(arr);
+		boolean[] arr = {isFire,
+				enemyInRadius1,
+				enemyInRadius3,
+				enemyInRadius5,
+				obstacleAhead,
+				stuck,
+				isMarioOnGround,
+				isMarioAbleToJump,
+				onPipe};
+
+		int hash = hash(arr)*10;
 
 		/* REWARD SECTION **/
 		double reward = 0;
 		float xChange = 0;
 		float yChange = 0;
+		float yGroundedChange = 0;
 
 		if (previousState != -1){
 
 			xChange = marioFloatPos[0] - previousX;
 			yChange = marioFloatPos[1] - previousY;
+			yGroundedChange = marioFloatPos[1] - previousGroundedY;
+
 			int numEnemiesKilled = getKillsTotal - previousKillsTotal;
+
+			direction = speedToDirection(xChange, yChange);
+			hash += direction;
 
 			reward +=  xChange*100 + 10*numEnemiesKilled;
 			if (marioStatus < previousStatus || previousAction == -1){
 				reward -= 5000; //Punishment for being hurt.
 			}
 			if (Math.max(0.00, xChange) > 0 && isMarioOnGround){
-				reward += Math.max(0.00, yChange);
+				reward += Math.max(0.00, yGroundedChange);
 			}
 			if (xChange < 0.1)
 				constXChange++;
@@ -189,7 +230,7 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 			hm.remove(previousState);
 			ArrayList<Double> newList = new ArrayList<Double>();
 
-			for (int i = 0; i < nb; i++){
+			for (int i = 0; i < numActions; i++){
 				if (i != previousAction){
 					newList.add(arrList.get(i));
 				}
@@ -197,7 +238,7 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 					double maxValue = 0;
 					if (hm.containsKey(hash)){
 						ArrayList<Double> temp = (ArrayList<Double>)hm.get(hash);
-						for (int j = 0; j < nb; j++){
+						for (int j = 0; j < numActions; j++){
 							maxValue = Math.max(maxValue, temp.get(j));
 						}
 					}
@@ -223,8 +264,7 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 				int maxValIndex = 1;
 				ArrayList<Integer> maxLink = new ArrayList<Integer>();
 				ArrayList<Double> arrList = (ArrayList<Double>) hm.get(hash);
-				for (int i = 0; i < nb; i++) {
-					if (i != Mario.KEY_DOWN) {
+				for (int i = 0; i < numActions; i++) {
 						double temp = arrList.get(i);
 						if (temp > maxVal) {
 							maxVal = temp;
@@ -233,47 +273,52 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 						} else if (temp == maxVal) {
 							maxLink.add(i);
 						}
-					}
 				}
 				if (maxVal >= 0) {
 					maxValIndex = maxLink.get((int) (maxLink.size() * Math.random()));
-					action[maxValIndex] = true;
+					previousAction = maxValIndex;
 				}
 			}
 			else{
-				action[(int) (Math.random() * nb)] = true;
+				previousAction = (int)(Math.random() * numActions);
 				randomCount++;
 			}
 		}
 		else{
 			//If this is a new state, select a random action.
-			ArrayList<Double> rewards = new ArrayList<Double>();
-			for (int i = 0; i < nb; i++){
-				rewards.add(0.0);
+			ArrayList<Double> qValues = new ArrayList<Double>();
+			for (int i = 0; i < numActions; i++){
+				qValues.add(0.0);
 			}
-			action[(int) (Math.random() * nb)] = true;
+			previousAction = (int)(Math.random() * numActions);
 			randomCount++;
 			//Add this blank array to the hashmap.
-			hm.put(hash, rewards);
+			hm.put(hash, qValues);
 		}
 
 		previousState = hash;
 		previousKillsTotal = getKillsTotal;
 		previousX = marioFloatPos[0];
 		previousStatus = marioStatus;
+		previousY = marioFloatPos[1];
 		if (isMarioOnGround)
-			previousY = marioFloatPos[1];
-		previousAction = -1;
-		for (int i = 0; i < nb; i++){
-			if (action[i]){
-				previousAction = i;
-				break;
-			}
-		}
+			previousGroundedY = marioFloatPos[1];
 		if (previousAction == -1){
-			previousAction = (int)(Math.random()*nb);
-			action[previousAction] = true;
+			previousAction = (int)(Math.random()*numActions);
 		}
+		// Left = 0 |  Right = 1  | Down = 2 | Jump = 3 | Speed = 4 | Up = 5
+		if (previousAction == 0){return s2ba("000000");}
+		if (previousAction == 1){return s2ba("100000");}
+		if (previousAction == 2){return s2ba("100100");}
+		if (previousAction == 3){return s2ba("100010");}
+		if (previousAction == 4){return s2ba("010000");}
+		if (previousAction == 5){return s2ba("010010");}
+		if (previousAction == 6){return s2ba("010100");}
+		if (previousAction == 7){return s2ba("001000");}
+		if (previousAction == 8){return s2ba("000100");}
+		if (previousAction == 9){return s2ba("000010");}
+		if (previousAction == 11){return s2ba("100110");}
+		if (previousAction == 10){return s2ba("010110");}
 
 		return action;
 	}

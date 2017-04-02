@@ -59,10 +59,11 @@ public final class Main {
 
         cmdLineOptions.setLevelRandSeed(6);
         cmdLineOptions.setVisualization(false);
-        double epsilon = (float)0.01;
+        double epsilon = 0.1;
+        double minEpsilon = 0.01;
 
         double learningRate = 0.2;
-        double discountFactor = 0.7;
+        double discountFactor = 0.9;
 
         float average = 0;
 
@@ -73,8 +74,8 @@ public final class Main {
         basicTask.reset(cmdLineOptions);
 
         for (int i = 0; i < generations; ++i) {
-            //epsilon = Math.max(minEpsilon, epsilon-(0.00001));
-            //cmdLineOptions.setVisualization((i+1)%50 == 0);
+            //epsilon = Math.max(minEpsilon, epsilon-(0.0001));
+            //cmdLineOptions.setVisualization((i)%50 == 0);
             agent.setEpsilon(epsilon);
             basicTask.reset(cmdLineOptions);
             basicTask.runOneEpisode();
