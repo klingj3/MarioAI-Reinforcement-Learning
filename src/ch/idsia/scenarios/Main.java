@@ -59,19 +59,19 @@ public final class Main {
         final String argsString = "-vis on -fps 100 -tl 200 -ld 0 -ag ch.idsia.agents.controllers.QLearningAgent";
         final CmdLineOptions cmdLineOptions = new CmdLineOptions(argsString);
         final BasicTask basicTask = new BasicTask(cmdLineOptions);
-        final MarioCustomSystemOfValues sov = new MarioCustomSystemOfValues();
 
         cmdLineOptions.setLevelRandSeed(6);
         cmdLineOptions.setVisualization(false);
         double epsilon = 0.3;
-        double minEpsilon = 0.1;
+        //double minEpsilon = 0.1;
 
         double learningRate = 0.2;
         double discountFactor = 0.7;
 
-        float average = 0;
+        String learningType = "SARSA";
 
-        QLearningAgent agent = new QLearningAgent();
+        QLearningAgent agent = new QLearningAgent(learningType);
+        agent.setEpsilon(epsilon);
         agent.setLearning(learningRate);
         agent.setDiscount(discountFactor);
         cmdLineOptions.setAgent(agent);
@@ -79,17 +79,31 @@ public final class Main {
 
         HashMap<Integer, ArrayList<Double>> hm;
 
+        int numSeeds = 10;
+        Integer seeds[] = new Integer[10];
+        for (int i = 0; i < numSeeds; i++){
+            seeds[i] = ((int)Math.random())*Integer.MAX_VALUE;
+        }
+
+        float generationAverage;
+        float cumulativeAverage = 0;
+
         for (int i = 0; i < generations; ++i) {
-            cmdLineOptions.setVisualization((i)%250 == 0);
-            agent.setEpsilon(epsilon);
-            basicTask.reset(cmdLineOptions);
-            basicTask.runOneEpisode();
-            float tempVal = basicTask.getEnvironment().getEvaluationInfo().computeWeightedFitness();
-            average += tempVal;
-            System.out.println(i + "\t" + tempVal + "\t" + average/(i+1));
+            generationAverage = 0;
+            for (int s = 0; s < numSeeds; s++) {
+                cmdLineOptions.setLevelRandSeed(seeds[s]);
+                //cmdLineOptions.setVisualization((i) % 250 == 0);
+                basicTask.reset(cmdLineOptions);
+                basicTask.runOneEpisode();
+                float tempVal = basicTask.getEnvironment().getEvaluationInfo().computeWeightedFitness();
+                generationAverage += tempVal;
+            }
             hm = agent.getHashMap();
-            agent = new QLearningAgent(hm, learningRate, discountFactor, epsilon);
+            agent = new QLearningAgent(learningType, hm, learningRate, discountFactor, epsilon);
             cmdLineOptions.setAgent(agent);
+            generationAverage = generationAverage/numSeeds;
+            cumulativeAverage += generationAverage;
+            System.out.println(i + "\t" + generationAverage + "\t" + cumulativeAverage/(i+1));
         }
 
 //        write(bestEver, "best.txt");

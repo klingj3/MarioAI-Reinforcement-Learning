@@ -17,16 +17,20 @@ import java.util.HashMap;
 
 public class QLearningAgent extends BasicMarioAIAgent implements Agent
 {
+	boolean qLearning;
+	boolean sarsa;
+
 	HashMap updatingHM; //
 	HashMap origHM;
 
 	double epsilon;
 	double learningRate;
 	double discountFactor;
+	double previousReward;
 
 	int previousState;
 	int previousKillsTotal;
-	int previousAction;
+	int currAction;
 	int constXChange;
 	int previousStatus;
 
@@ -94,9 +98,41 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 		genericInitializers();
 	}
 
-	public QLearningAgent(HashMap<Integer, ArrayList<Double>> newHash, double lr, double df, double e)
+	public QLearningAgent(String learningType)
 	{
 		super("jk");
+
+		if (learningType.equals("SARSA")){
+			System.out.println("Sarsa Performance");
+			sarsa = true;
+			qLearning = false;
+		}
+		else if (learningType.equals("QLEARNING")){
+			System.out.println("QLearning Performance");
+			sarsa = false;
+			qLearning = true;
+		}
+
+		System.out.println("Generation" + "\t" + "Generation Fitness" + "\t" + "Average to Date");
+
+		updatingHM = new HashMap<Integer, ArrayList<Double>>();
+		origHM = new HashMap<Integer, ArrayList<Double>>();
+		genericInitializers();
+	}
+
+	public QLearningAgent(String learningType, HashMap<Integer, ArrayList<Double>> newHash, double lr, double df, double e)
+	{
+		super("jk");
+
+		if (learningType.equals("SARSA")){
+			sarsa = true;
+			qLearning = false;
+		}
+		else if (learningType.equals("QLEARNING")){
+			sarsa = false;
+			qLearning = true;
+		}
+
 		updatingHM = (HashMap<Integer, ArrayList<Double>>)newHash.clone();
 		origHM = (HashMap<Integer, ArrayList<Double>>)newHash.clone();
 		genericInitializers();
@@ -115,13 +151,13 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 		previousX = -1;
 		previousY = -1;
 		previousGroundedY = -1;
-		previousAction = -1;
+		currAction = -1;
 		constXChange = 0;
 		previousStatus = 0;
 		stuck = false;
 		learningRate = 0.3;
 		discountFactor = 0.9;
-
+		previousReward = 0.0;
 		randomCount = 0;
 		totalCount = 0;
 
@@ -261,27 +297,41 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 				constXChange = 0;
 			//reward -= 50*b2i(stuck);
 
-			ArrayList<Double> arrList = (ArrayList<Double>) updatingHM.get(previousState);
+			ArrayList<Double> previousStateValues = (ArrayList<Double>) updatingHM.get(previousState);
 			updatingHM.remove(previousState);
 			ArrayList<Double> newList = new ArrayList<Double>();
-
-			for (int i = 0; i < numActions; i++){
-				if (i != previousAction){
-					newList.add(arrList.get(i));
-				}
-				else{
-					double maxValue = 0;
-					if (updatingHM.containsKey(hash)){
-						ArrayList<Double> temp = (ArrayList<Double>) updatingHM.get(hash);
-						for (int j = 0; j < numActions; j++){
-							maxValue = Math.max(maxValue, temp.get(j));
+			//Copies all of the values for the old, except for that action being updated.
+			for (int i = 0; i < numActions; i++) {
+				if (i != currAction) {
+					newList.add(previousStateValues.get(i));
+				} else {
+					//At the updated action, the nature of the update depends on Qlearning or Sarsa
+					if (qLearning) {
+						double maxValue = 0;
+						if (updatingHM.containsKey(hash)) {
+							ArrayList<Double> temp = (ArrayList<Double>) updatingHM.get(hash);
+							for (int j = 0; j < numActions; j++) {
+								maxValue = Math.max(maxValue, temp.get(j));
+							}
 						}
+						//QLearning formula
+						double newQ = (previousStateValues.get(currAction)) + learningRate *
+								(reward + discountFactor * maxValue - previousStateValues.get(currAction));
+						newList.add(newQ);
 					}
-					double newQ = (1-learningRate)*(arrList.get(previousAction)) + learningRate*
-							(reward+discountFactor*maxValue);
-					newList.add(newQ);
+					else if (sarsa){
+						double currentActionValue = 0;
+						if (updatingHM.containsKey(hash)){
+							ArrayList<Double> temp = (ArrayList<Double>) updatingHM.get(hash);
+							currentActionValue = temp.get(currAction);
+						}
+						double newSarsa = previousStateValues.get(currAction) + learningRate*(previousReward +
+									discountFactor*currentActionValue - previousStateValues.get(currAction));
+						newList.add(newSarsa);
+					}
 				}
 			}
+
 
 			updatingHM.put(previousState, newList);
 
@@ -311,11 +361,11 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 				}
 				if (maxVal >= 0) {
 					maxValIndex = maxLink.get((int) (maxLink.size() * Math.random()));
-					previousAction = maxValIndex;
+					currAction = maxValIndex;
 				}
 			}
 			else{
-				previousAction = (int)(Math.random() * numActions);
+				currAction = (int)(Math.random() * numActions);
 				randomCount++;
 			}
 		}
@@ -325,12 +375,13 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 			for (int i = 0; i < numActions; i++){
 				qValues.add(0.0);
 			}
-			previousAction = (int)(Math.random() * numActions);
+			currAction = (int)(Math.random() * numActions);
 			randomCount++;
 			//Add this blank array to the hashmap.
 			updatingHM.put(hash, qValues);
 		}
 
+		previousReward = reward;
 		previousState = hash;
 		previousKillsTotal = getKillsTotal;
 		previousX = marioFloatPos[0];
@@ -338,22 +389,22 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 		previousY = marioFloatPos[1];
 		if (isMarioOnGround)
 			previousGroundedY = marioFloatPos[1];
-		if (previousAction == -1){
-			previousAction = (int)(Math.random()*numActions);
+		if (currAction == -1){
+			currAction = (int)(Math.random()*numActions);
 		}
 		// Left = 0 |  Right = 1  | Down = 2 | Jump = 3 | Speed = 4 | Up = 5
-		if (previousAction == 0){return s2ba("000000");}
-		if (previousAction == 1){return s2ba("100000");}
-		if (previousAction == 2){return s2ba("100100");}
-		if (previousAction == 3){return s2ba("100010");}
-		if (previousAction == 4){return s2ba("010000");}
-		if (previousAction == 5){return s2ba("010010");}
-		if (previousAction == 6){return s2ba("010100");}
-		if (previousAction == 7){return s2ba("001000");}
-		if (previousAction == 8){return s2ba("000100");}
-		if (previousAction == 9){return s2ba("000010");}
-		if (previousAction == 11){return s2ba("100110");}
-		if (previousAction == 10){return s2ba("010110");}
+		if (currAction == 0){return s2ba("000000");}
+		if (currAction == 1){return s2ba("100000");}
+		if (currAction == 2){return s2ba("100100");}
+		if (currAction == 3){return s2ba("100010");}
+		if (currAction == 4){return s2ba("010000");}
+		if (currAction == 5){return s2ba("010010");}
+		if (currAction == 6){return s2ba("010100");}
+		if (currAction == 7){return s2ba("001000");}
+		if (currAction == 8){return s2ba("000100");}
+		if (currAction == 9){return s2ba("000010");}
+		if (currAction == 11){return s2ba("100110");}
+		if (currAction == 10){return s2ba("010110");}
 
 		return action;
 	}
