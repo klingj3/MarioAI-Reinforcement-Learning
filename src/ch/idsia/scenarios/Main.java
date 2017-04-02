@@ -52,7 +52,7 @@ public final class Main {
         int generations = 1000;
 
         //Establishing junk.
-        final String argsString = "-vis on -fps 100 -tl 100 -ld 0 -ag ch.idsia.agents.controllers.QLearningAgent";
+        final String argsString = "-vis on -fps 150 -tl 200 -ld 0 -ag ch.idsia.agents.controllers.QLearningAgent";
         final CmdLineOptions cmdLineOptions = new CmdLineOptions(argsString);
         final BasicTask basicTask = new BasicTask(cmdLineOptions);
         final MarioCustomSystemOfValues sov = new MarioCustomSystemOfValues();

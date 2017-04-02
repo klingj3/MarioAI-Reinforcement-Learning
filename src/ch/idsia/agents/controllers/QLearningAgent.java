@@ -164,6 +164,18 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 		return ret;
 	}
 
+	//distance to closet enemy on right;
+	private int distanceToClosestEnemy(byte[][] scene){
+		for (int x = 9; x < 19; x++){
+			for (int y = 0; y < 18; y++){
+				if (isEnemy(x, y, scene)){
+					return x-9;
+				}
+			}
+		}
+		return 9;
+	}
+
 	public boolean[] getAction()
 	{
 
@@ -212,13 +224,15 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 
 			direction = speedToDirection(xChange, yChange);
 			hash += direction;
+			hash *= 10;
+			hash += distanceToClosestEnemy(scene);
 
 			reward +=  xChange*100 + 10*numEnemiesKilled;
-			if (marioStatus < previousStatus || previousAction == -1){
+			if (marioStatus < previousStatus){
 				reward -= 5000; //Punishment for being hurt.
 			}
 			if (Math.max(0.00, xChange) > 0 && isMarioOnGround){
-				reward += Math.max(0.00, yGroundedChange);
+				reward += 100*Math.max(0.00, yGroundedChange);
 			}
 			if (xChange < 0.1)
 				constXChange++;
