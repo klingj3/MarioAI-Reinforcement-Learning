@@ -63,12 +63,11 @@ public final class Main {
         cmdLineOptions.setLevelRandSeed(6);
         cmdLineOptions.setVisualization(false);
         double epsilon = 0.3;
-        //double minEpsilon = 0.1;
 
         double learningRate = 0.2;
-        double discountFactor = 0.7;
+        double discountFactor = 0.6;
 
-        String learningType = "SARSA";
+        String learningType = "SARSA"; //Must be SARSA or QLEARNING
 
         QLearningAgent agent = new QLearningAgent(learningType);
         agent.setEpsilon(epsilon);
@@ -85,25 +84,38 @@ public final class Main {
             seeds[i] = ((int)Math.random())*Integer.MAX_VALUE;
         }
 
-        float generationAverage;
+        float generationAverages[] = new float[generations];
         float cumulativeAverage = 0;
 
-        for (int i = 0; i < generations; ++i) {
-            generationAverage = 0;
+        for (int i = 0; i < generations+300; ++i) {
+            if (i > 1000){
+                learningRate = 0;
+                epsilon = 0;
+            }
+
+            generationAverages[i+300] = 0;
             for (int s = 0; s < numSeeds; s++) {
                 cmdLineOptions.setLevelRandSeed(seeds[s]);
                 //cmdLineOptions.setVisualization((i) % 250 == 0);
                 basicTask.reset(cmdLineOptions);
                 basicTask.runOneEpisode();
                 float tempVal = basicTask.getEnvironment().getEvaluationInfo().computeWeightedFitness();
-                generationAverage += tempVal;
+                generationAverages[i] += tempVal;
             }
             hm = agent.getHashMap();
             agent = new QLearningAgent(learningType, hm, learningRate, discountFactor, epsilon);
             cmdLineOptions.setAgent(agent);
-            generationAverage = generationAverage/numSeeds;
-            cumulativeAverage += generationAverage;
-            System.out.println(i + "\t" + generationAverage + "\t" + cumulativeAverage/(i+1));
+            generationAverages[i] = generationAverages[i]/numSeeds;
+            cumulativeAverage += generationAverages[i];
+            if (i < 30)
+                System.out.println(i + "\t" + generationAverages[i] + "\t" + cumulativeAverage/(i+1) + "\t" + cumulativeAverage/(i+1));
+            else{
+                float temp = 0;
+                for (int k = i-30; k<i; k++){
+                    temp += generationAverages[k];
+                }
+                System.out.println(i + "\t" + generationAverages[i] + "\t" + temp/(30) + "\t" + cumulativeAverage/(i+1));
+            }
         }
 
 //        write(bestEver, "best.txt");

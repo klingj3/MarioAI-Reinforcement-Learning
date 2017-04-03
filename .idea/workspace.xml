@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="21a0aecb-1c33-4b2d-97e1-9c9bc945c119" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MarioAI+Benchmark/ch/idsia/scenarios/Main.class" afterPath="$PROJECT_DIR$/out/production/MarioAI+Benchmark/ch/idsia/scenarios/Main.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ch/idsia/agents/controllers/QLearningAgent.java" afterPath="$PROJECT_DIR$/src/ch/idsia/agents/controllers/QLearningAgent.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ch/idsia/scenarios/Main.java" afterPath="$PROJECT_DIR$/src/ch/idsia/scenarios/Main.java" />
@@ -25,10 +26,19 @@
           <file leaf-file-name="QLearningAgent.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/ch/idsia/agents/controllers/QLearningAgent.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="362">
-                  <caret line="358" column="43" lean-forward="true" selection-start-line="358" selection-start-column="43" selection-end-line="358" selection-end-column="43" />
+                <state relative-caret-position="432">
+                  <caret line="117" column="59" lean-forward="true" selection-start-line="117" selection-start-column="59" selection-end-line="117" selection-end-column="59" />
                   <folding>
                     <element signature="imports" expanded="true" />
+                    <element signature="method#isObstacle#0;class#QLearningAgent#0" expanded="false" />
+                    <element signature="method#enemyInRadius#0;class#QLearningAgent#0" expanded="false" />
+                    <element signature="method#obstacleAhead#0;class#QLearningAgent#0" expanded="false" />
+                    <element signature="method#QLearningAgent#0;class#QLearningAgent#0" expanded="false" />
+                    <element signature="method#QLearningAgent#2;class#QLearningAgent#0" expanded="false" />
+                    <element signature="method#genericInitializers#0;class#QLearningAgent#0" expanded="false" />
+                    <element signature="e#7542#7551#0" expanded="true" />
+                    <element signature="e#8184#8192#0" expanded="true" />
+                    <element signature="e#9175#9183#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -41,8 +51,8 @@
           <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/ch/idsia/scenarios/Main.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="276">
-                  <caret line="70" column="36" lean-forward="false" selection-start-line="70" selection-start-column="36" selection-end-line="70" selection-end-column="36" />
+                <state relative-caret-position="153">
+                  <caret line="69" column="36" lean-forward="false" selection-start-line="69" selection-start-column="36" selection-end-line="69" selection-end-column="36" />
                   <folding>
                     <element signature="imports" expanded="true" />
                   </folding>
@@ -56,9 +66,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Math.random()</find>
-      <find>reward</find>
-      <find>float</find>
       <find>obstacle</find>
       <find>|| stuck</find>
       <find>epsilon =</find>
@@ -86,6 +93,9 @@
       <find>hash</find>
       <find>reward +=</find>
       <find>hm.</find>
+      <find>reward</find>
+      <find>currAction</find>
+      <find>stuck</find>
     </findStrings>
     <replaceStrings>
       <replace>genSize</replace>
@@ -116,8 +126,8 @@
         <option value="$PROJECT_DIR$/src/ch/idsia/agents/controllers/BasicMarioAIAgent.java" />
         <option value="$PROJECT_DIR$/src/ch/idsia/tools/EvaluationInfo.java" />
         <option value="$PROJECT_DIR$/src/ch/idsia/agents/controllers/jk.java" />
-        <option value="$PROJECT_DIR$/src/ch/idsia/scenarios/Main.java" />
         <option value="$PROJECT_DIR$/src/ch/idsia/agents/controllers/QLearningAgent.java" />
+        <option value="$PROJECT_DIR$/src/ch/idsia/scenarios/Main.java" />
       </list>
     </option>
   </component>
@@ -787,7 +797,14 @@
       <option name="project" value="LOCAL" />
       <updated>1491161403092</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Nearly done. Needs some slight tweaks to reward function for better performance, and Sarsa needs an alteration to be more accurate. Besides that, all good.">
+      <created>1491170001394</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1491170001394</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TodoView">
@@ -812,7 +829,7 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21237993" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21237993" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32977587" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -852,10 +869,20 @@
     <MESSAGE value="Added distance to closet enemy to the hash." />
     <MESSAGE value="Very good, 7000s+" />
     <MESSAGE value="Performing excellently. Now made the slight alteration such that only the Qvalue table currently being updated does not impact the perrfomance of the current cycle, rather these alterations are used to inform decisions in the next cycle. Only a little fine-tuning remaining to bring this program up to the ideal threshholds." />
-    <option name="LAST_COMMIT_MESSAGE" value="Performing excellently. Now made the slight alteration such that only the Qvalue table currently being updated does not impact the perrfomance of the current cycle, rather these alterations are used to inform decisions in the next cycle. Only a little fine-tuning remaining to bring this program up to the ideal threshholds." />
+    <MESSAGE value="Nearly done. Needs some slight tweaks to reward function for better performance, and Sarsa needs an alteration to be more accurate. Besides that, all good." />
+    <option name="LAST_COMMIT_MESSAGE" value="Nearly done. Needs some slight tweaks to reward function for better performance, and Sarsa needs an alteration to be more accurate. Besides that, all good." />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/ch/idsia/agents/controllers/QLearningAgent.java</url>
+          <line>83</line>
+          <properties class="ch.idsia.agents.controllers.QLearningAgent" method="obstacleAhead" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="1" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="antWorkspaceConfiguration">
@@ -1222,8 +1249,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ch/idsia/scenarios/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="276">
-          <caret line="70" column="36" lean-forward="false" selection-start-line="70" selection-start-column="36" selection-end-line="70" selection-end-column="36" />
+        <state relative-caret-position="153">
+          <caret line="69" column="36" lean-forward="false" selection-start-line="69" selection-start-column="36" selection-end-line="69" selection-end-column="36" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1232,10 +1259,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ch/idsia/agents/controllers/QLearningAgent.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="362">
-          <caret line="358" column="43" lean-forward="true" selection-start-line="358" selection-start-column="43" selection-end-line="358" selection-end-column="43" />
+        <state relative-caret-position="432">
+          <caret line="117" column="59" lean-forward="true" selection-start-line="117" selection-start-column="59" selection-end-line="117" selection-end-column="59" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#isObstacle#0;class#QLearningAgent#0" expanded="false" />
+            <element signature="method#enemyInRadius#0;class#QLearningAgent#0" expanded="false" />
+            <element signature="method#obstacleAhead#0;class#QLearningAgent#0" expanded="false" />
+            <element signature="method#QLearningAgent#0;class#QLearningAgent#0" expanded="false" />
+            <element signature="method#QLearningAgent#2;class#QLearningAgent#0" expanded="false" />
+            <element signature="method#genericInitializers#0;class#QLearningAgent#0" expanded="false" />
+            <element signature="e#7542#7551#0" expanded="true" />
+            <element signature="e#8184#8192#0" expanded="true" />
+            <element signature="e#9175#9183#0" expanded="true" />
           </folding>
         </state>
       </provider>

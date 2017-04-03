@@ -33,6 +33,7 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 	int currAction;
 	int constXChange;
 	int previousStatus;
+	int previousAction;
 
 	int randomCount;
 	int totalCount;
@@ -43,8 +44,6 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 	float previousGroundedY;
 
 	boolean stuck;
-
-	ArrayList<boolean[]> actionSets;
 
 	// 0 			 = nothing
 	//-60, -24, -85  = can't pass through
@@ -113,7 +112,7 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 			qLearning = true;
 		}
 
-		System.out.println("Generation" + "\t" + "Generation Fitness" + "\t" + "Average to Date");
+		System.out.println("Generation" + "\t" + "Generation Fitness" + "\t" + "Average last 30 Generations" + "\t" + "Average to Date");
 
 		updatingHM = new HashMap<Integer, ArrayList<Double>>();
 		origHM = new HashMap<Integer, ArrayList<Double>>();
@@ -160,6 +159,7 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 		previousReward = 0.0;
 		randomCount = 0;
 		totalCount = 0;
+		previousAction = 0;
 
 		reset();
 	}
@@ -266,82 +266,53 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 
 		/* REWARD SECTION **/
 		double reward = 0;
-		float xChange = 0;
-		float yChange = 0;
+		float xChange =  marioFloatPos[0] - previousX;
+		float yChange = marioFloatPos[1] - previousY;
+		direction = speedToDirection(xChange, yChange);
+		hash += direction;
+		hash *= 10;
+		hash += distanceToClosestEnemy(scene);
+
 		float yGroundedChange = 0;
 
+		selectAction(hash);
+
 		if (previousState != -1){
-
-			xChange = marioFloatPos[0] - previousX;
-			yChange = marioFloatPos[1] - previousY;
-			yGroundedChange = marioFloatPos[1] - previousGroundedY;
-
-			int numEnemiesKilled = getKillsTotal - previousKillsTotal;
-
-			direction = speedToDirection(xChange, yChange);
-			hash += direction;
-			hash *= 10;
-			hash += distanceToClosestEnemy(scene);
-
-			reward +=  xChange*100 + 10*numEnemiesKilled;
-
-			if (marioStatus < previousStatus){
-				reward -= 5000; //Punishment for being hurt.
-			}
-			if (Math.max(0.00, xChange) > 0 && isMarioOnGround){
-				reward += 100*Math.max(0.00, yGroundedChange);
-			}
-			if (xChange < 0.1)
-				constXChange++;
-			else
-				constXChange = 0;
-			//reward -= 50*b2i(stuck);
-
-			ArrayList<Double> previousStateValues = (ArrayList<Double>) updatingHM.get(previousState);
-			updatingHM.remove(previousState);
-			ArrayList<Double> newList = new ArrayList<Double>();
-			//Copies all of the values for the old, except for that action being updated.
-			for (int i = 0; i < numActions; i++) {
-				if (i != currAction) {
-					newList.add(previousStateValues.get(i));
-				} else {
-					//At the updated action, the nature of the update depends on Qlearning or Sarsa
-					if (qLearning) {
-						double maxValue = 0;
-						if (updatingHM.containsKey(hash)) {
-							ArrayList<Double> temp = (ArrayList<Double>) updatingHM.get(hash);
-							for (int j = 0; j < numActions; j++) {
-								maxValue = Math.max(maxValue, temp.get(j));
-							}
-						}
-						//QLearning formula
-						double newQ = (previousStateValues.get(currAction)) + learningRate *
-								(reward + discountFactor * maxValue - previousStateValues.get(currAction));
-						newList.add(newQ);
-					}
-					else if (sarsa){
-						double currentActionValue = 0;
-						if (updatingHM.containsKey(hash)){
-							ArrayList<Double> temp = (ArrayList<Double>) updatingHM.get(hash);
-							currentActionValue = temp.get(currAction);
-						}
-						double newSarsa = previousStateValues.get(currAction) + learningRate*(previousReward +
-									discountFactor*currentActionValue - previousStateValues.get(currAction));
-						newList.add(newSarsa);
-					}
-				}
-			}
-
-
-			updatingHM.put(previousState, newList);
-
-			stuck = (constXChange > 5);
+			reward = getReward(hash, reward, xChange);
 		}
 
 
-		/* END OF REWARD **/
 
+		previousAction = currAction;
+		previousReward = reward;
+		previousState = hash;
+		previousKillsTotal = getKillsTotal;
+		previousX = marioFloatPos[0];
+		previousStatus = marioStatus;
+		previousY = marioFloatPos[1];
+		if (isMarioOnGround)
+			previousGroundedY = marioFloatPos[1];
+		if (currAction == -1){
+			currAction = (int)(Math.random()*numActions);
+		}
+		// Left = 0 |  Right = 1  | Down = 2 | Jump = 3 | Speed = 4 | Up = 5
+		if (currAction == 0){return s2ba("000000");}
+		if (currAction == 1){return s2ba("100000");}
+		if (currAction == 2){return s2ba("100100");}
+		if (currAction == 3){return s2ba("100010");}
+		if (currAction == 4){return s2ba("010000");}
+		if (currAction == 5){return s2ba("010010");}
+		if (currAction == 6){return s2ba("010100");}
+		if (currAction == 7){return s2ba("001000");}
+		if (currAction == 8){return s2ba("000100");}
+		if (currAction == 9){return s2ba("000010");}
+		if (currAction == 10){return s2ba("010110");}
+		if (currAction == 11){return s2ba("100110");}
 
+		return action;
+	}
+
+	private void selectAction(int hash) {
 		//If we've seen this state before, we use Q values to make an assessment.
 		if (origHM.containsKey(hash)){
 			if (Math.random() > epsilon) {
@@ -366,7 +337,6 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 			}
 			else{
 				currAction = (int)(Math.random() * numActions);
-				randomCount++;
 			}
 		}
 		else{
@@ -376,37 +346,71 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 				qValues.add(0.0);
 			}
 			currAction = (int)(Math.random() * numActions);
-			randomCount++;
 			//Add this blank array to the hashmap.
 			updatingHM.put(hash, qValues);
 		}
+	}
 
-		previousReward = reward;
-		previousState = hash;
-		previousKillsTotal = getKillsTotal;
-		previousX = marioFloatPos[0];
-		previousStatus = marioStatus;
-		previousY = marioFloatPos[1];
-		if (isMarioOnGround)
-			previousGroundedY = marioFloatPos[1];
-		if (currAction == -1){
-			currAction = (int)(Math.random()*numActions);
-		}
-		// Left = 0 |  Right = 1  | Down = 2 | Jump = 3 | Speed = 4 | Up = 5
-		if (currAction == 0){return s2ba("000000");}
-		if (currAction == 1){return s2ba("100000");}
-		if (currAction == 2){return s2ba("100100");}
-		if (currAction == 3){return s2ba("100010");}
-		if (currAction == 4){return s2ba("010000");}
-		if (currAction == 5){return s2ba("010010");}
-		if (currAction == 6){return s2ba("010100");}
-		if (currAction == 7){return s2ba("001000");}
-		if (currAction == 8){return s2ba("000100");}
-		if (currAction == 9){return s2ba("000010");}
-		if (currAction == 11){return s2ba("100110");}
-		if (currAction == 10){return s2ba("010110");}
+	private double getReward(int hash, double reward, float xChange) {
+		float yGroundedChange;
+		yGroundedChange = marioFloatPos[1] - previousGroundedY;
+		int numEnemiesKilled = getKillsTotal - previousKillsTotal;
+		reward +=  xChange*10 + 2*numEnemiesKilled;
 
-		return action;
+		if (marioStatus < previousStatus){
+            reward -= 500; //Punishment for being hurt.
+        }
+		if (Math.max(0.00, xChange) > 0 && isMarioOnGround){
+            reward += 10*Math.max(0.00, yGroundedChange);
+        }
+		if (xChange < 0.1)
+            constXChange++;
+        else
+            constXChange = 0;
+		reward -= 5*b2i(stuck);
+
+		ArrayList<Double> previousStateValues = (ArrayList<Double>) updatingHM.get(previousState);
+		updatingHM.remove(previousState);
+		ArrayList<Double> newList = new ArrayList<Double>();
+		//Copies all of the values for the old, except for that action being updated.
+		for (int i = 0; i < numActions; i++) {
+            if (i != previousAction) {
+                newList.add(previousStateValues.get(i));
+            } else {
+                //At the updated action, the nature of the update depends on Qlearning or Sarsa
+                if (qLearning) {
+                    double maxValue = 0;
+                    if (updatingHM.containsKey(hash)) {
+                        ArrayList<Double> temp = (ArrayList<Double>) updatingHM.get(hash);
+                        for (int j = 0; j < numActions; j++) {
+                            maxValue = Math.max(maxValue, temp.get(j));
+                        }
+                    }
+                    //QLearning formula
+                    double newQ = (previousStateValues.get(previousAction)) + learningRate *
+                            (reward + discountFactor * maxValue - previousStateValues.get(previousAction));
+                    newList.add(newQ);
+                }
+                else if (sarsa){
+                    double currentActionValue = 0;
+                    if (updatingHM.containsKey(hash)){
+                        ArrayList<Double> temp = (ArrayList<Double>) updatingHM.get(hash);
+                        currentActionValue = temp.get(currAction);
+                    }
+                    double newSarsa = previousStateValues.get(previousAction) + learningRate*(previousReward +
+                                discountFactor*currentActionValue - previousStateValues.get(previousAction));
+                    newList.add(newSarsa);
+                }
+                else
+                	System.out.println("ERROR!: Neither QLearning nor SARSA selected!");
+            }
+        }
+
+
+		updatingHM.put(previousState, newList);
+
+		stuck = (constXChange > 5);
+		return reward;
 	}
 
 	public void reset()
