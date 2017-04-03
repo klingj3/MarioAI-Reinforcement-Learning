@@ -53,7 +53,7 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 	// 93			 = Spiky -- Irrlevant for level 0
 
 	private boolean isEnemy(int y, int x, byte[][] scene){
-		return (scene[x][y] == 80);
+		return (scene[x][y] == 80 || scene[x][y] == 93);
 	}
 
 	private boolean isObstacle(int y, int x, byte[][] scene){
@@ -86,7 +86,7 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 	}
 
 	private boolean softObstacleAbove(byte[][] scene){
-		for (int i = 0; i < 9; i++){
+		for (int i = 5; i < 9; i++){
 			if (scene[i][9] == -62){
 				return true;
 			}
@@ -120,8 +120,7 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 			sarsa = false;
 			qLearning = true;
 		}
-
-		System.out.println("Generation" + "\t" + "Generation Fitness" + "\t" + "Average last 30 Generations" + "\t" + "Average to Date");
+		System.out.println("Generation" + "\t" + "Generation Fitness" + "\t" + "Average last 30 Generations" + "\t" + "Total Average" + "\t" + "Maximum Generation Value");
 
 		updatingHM = new HashMap<Integer, ArrayList<Double>>();
 		origHM = new HashMap<Integer, ArrayList<Double>>();
@@ -255,20 +254,23 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 		boolean enemyInRadius1 = enemyInRadius(1, scene);
 		boolean enemyInRadius3 = enemyInRadius(3, scene);
 		boolean enemyInRadius5 = enemyInRadius(5, scene);
-		boolean onPipe = scene[9][10] == -85;
+		boolean onPipe = scene[10][9] == -85;
 		boolean isFire = marioStatus == 2;
 		int direction = 0;
 
 		boolean obstacleAhead = obstacleAhead(scene) || scene[9][10] != 0;
 		boolean softObstacle = softObstacleAbove(scene);
+        boolean onGround = scene[10][9] == -24 || scene[10][9] == -62 || scene[10][9] == -24 || scene[10][9] == -85 ||scene[10][9] == -60 || scene[10][9] == -25 || isMarioOnGround;
 
-		boolean[] arr = {softObstacle, isFire,
+        boolean[] arr = {
+                softObstacle,
+                isFire,
 				enemyInRadius1,
 				enemyInRadius3,
 				enemyInRadius5,
 				obstacleAhead,
 				stuck,
-				isMarioOnGround,
+				onGround,
 				isMarioAbleToJump,
 				onPipe};
 
@@ -288,7 +290,7 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 		selectAction(hash);
 
 		if (previousState != -1){
-			reward = getReward(hash, reward, xChange, scene);
+			reward = getReward(hash, reward, xChange, scene, onGround);
 		}
 
 
@@ -300,7 +302,7 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 		previousX = marioFloatPos[0];
 		previousStatus = marioStatus;
 		previousY = marioFloatPos[1];
-		if (isMarioOnGround)
+		if (onGround)
 			previousGroundedY = marioFloatPos[1];
 		if (currAction == -1){
 			currAction = (int)(Math.random()*numActions);
@@ -361,28 +363,32 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 		}
 	}
 
-	private double getReward(int hash, double reward, float xChange, byte[][] scene) {
+	private double getReward(int hash, double reward, float xChange, byte[][] scene, boolean onGround) {
 		float yGroundedChange;
 		yGroundedChange = marioFloatPos[1] - previousGroundedY;
 		int numEnemiesKilled = getKillsTotal - previousKillsTotal;
-		reward +=  xChange*10 + 5*numEnemiesKilled;
+		if (stuck){
+		    xChange = Math.max(xChange, -1*xChange);
+        }
+		reward +=  xChange*10 + 2*numEnemiesKilled;
 
 		if (marioStatus < previousStatus){
             reward -= 500; //Punishment for being hurt.
         }
-		if (Math.max(0.00, xChange) > 0 && isMarioOnGround){
-			if (yGroundedChange <= 0) {
-				reward += -10 * Math.max(0.00, yGroundedChange);
-				if (scene[10][9] == -62 || scene[10][9] == -24) {
-					reward += 50;
+		if (Math.max(0.00, xChange) > 0 && onGround){
+			if (yGroundedChange < 0) {
+			    double oldReward = reward;
+				if (scene[10][9] != -60 || scene[11][9] != -60) {
+                    reward += -(yGroundedChange); //goundedchanged is negative.
+					reward += 100;
 				}
 			}
         }
 		if (xChange < 0.1)
             constXChange++;
         else
-            constXChange = 0;
-		reward -= 5*b2i(stuck);
+            constXChange = Math.max(0, constXChange-1);
+		reward -= 10*b2i(stuck);
 
 		ArrayList<Double> previousStateValues = (ArrayList<Double>) updatingHM.get(previousState);
 		updatingHM.remove(previousState);

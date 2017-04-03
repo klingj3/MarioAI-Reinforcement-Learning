@@ -53,7 +53,7 @@ public final class Main {
 
     public static void main(String[] args) {
 
-        int generations = 1000;
+        int generations = 500;
 
         //Establishing junk.
         final String argsString = "-vis on -fps 100 -tl 200 -ld 0 -ag ch.idsia.agents.controllers.QLearningAgent";
@@ -62,12 +62,14 @@ public final class Main {
 
         cmdLineOptions.setVisualization(false);
 
-        double epsilon = 0.15;
+        //MODIFY THESE FOR EXPERIMENTAITON
+        int numSeeds = 1;
+        double epsilon = 0.3;
         double learningRate = 0.2;
-        double discountFactor = 0.6;
-        boolean visualizeEvery100 = false;
-
+        double discountFactor = 0.7;
+        boolean visualizeEvery200 = true;
         String learningType = "QLEARNING"; //Must be SARSA or QLEARNING
+        //END OF MODIFYABLE!
 
         QLearningAgent agent = new QLearningAgent(learningType);
         agent.setEpsilon(epsilon);
@@ -78,21 +80,24 @@ public final class Main {
 
         HashMap<Integer, ArrayList<Double>> hm;
 
-        int numSeeds = 10;
-        Integer seeds[] = new Integer[10];
+        Integer seeds[] = new Integer[numSeeds];
         for (int i = 0; i < numSeeds; i++){
-            seeds[i] = (int)(Math.random()*Integer.MAX_VALUE);
+            if (numSeeds == 1)
+                seeds[i] = 0;
+            else
+                seeds[i] = (int)(Math.random()*Integer.MAX_VALUE);
         }
 
         float generationAverages[] = new float[generations];
         float cumulativeAverage = 0;
+        float maximumToDate = 0;
 
         for (int i = 0; i < generations; ++i) {
             generationAverages[i] = 0;
             for (int s = 0; s < numSeeds; s++) {
                 cmdLineOptions.setLevelRandSeed(seeds[s]);
-                if (visualizeEvery100)
-                    cmdLineOptions.setVisualization((i-5) % 100 == 0);
+                if (visualizeEvery200)
+                    cmdLineOptions.setVisualization((i+1) % 200 == 0);
                 basicTask.reset(cmdLineOptions);
                 basicTask.runOneEpisode();
                 float tempVal = basicTask.getEnvironment().getEvaluationInfo().computeWeightedFitness();
@@ -103,14 +108,15 @@ public final class Main {
             cmdLineOptions.setAgent(agent);
             generationAverages[i] = generationAverages[i]/numSeeds;
             cumulativeAverage += generationAverages[i];
+            maximumToDate = Math.max(maximumToDate, generationAverages[i]);
             if (i < 30)
-                System.out.println(i + "\t" + generationAverages[i] + "\t" + cumulativeAverage/(i+1) + "\t" + cumulativeAverage/(i+1));
+                System.out.println(i + "\t" + generationAverages[i] + "\t" + cumulativeAverage/(i+1) + "\t" + cumulativeAverage/(i+1)+ "\t" + maximumToDate);
             else{
                 float temp = 0;
                 for (int k = i-30; k<i; k++){
                     temp += generationAverages[k];
                 }
-                System.out.println(i + "\t" + generationAverages[i] + "\t" + temp/(30) + "\t" + cumulativeAverage/(i+1));
+                System.out.println(i + "\t" + generationAverages[i] + "\t" + temp/(30) + "\t" + cumulativeAverage/(i+1) + "\t" + maximumToDate);
             }
         }
 
