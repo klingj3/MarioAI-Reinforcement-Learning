@@ -56,16 +56,16 @@ public final class Main {
         int generations = 1000;
 
         //Establishing junk.
-        final String argsString = "-vis on -fps 45 -tl 200 -ld 0 -ag ch.idsia.agents.controllers.QLearningAgent";
+        final String argsString = "-vis on -fps 100 -tl 200 -ld 0 -ag ch.idsia.agents.controllers.QLearningAgent";
         final CmdLineOptions cmdLineOptions = new CmdLineOptions(argsString);
         final BasicTask basicTask = new BasicTask(cmdLineOptions);
 
-        cmdLineOptions.setLevelRandSeed(6);
         cmdLineOptions.setVisualization(false);
-        double epsilon = 0.15;
 
+        double epsilon = 0.15;
         double learningRate = 0.2;
         double discountFactor = 0.6;
+        boolean visualizeEvery100 = false;
 
         String learningType = "QLEARNING"; //Must be SARSA or QLEARNING
 
@@ -91,7 +91,8 @@ public final class Main {
             generationAverages[i] = 0;
             for (int s = 0; s < numSeeds; s++) {
                 cmdLineOptions.setLevelRandSeed(seeds[s]);
-                //cmdLineOptions.setVisualization((1+i) % 100 == 0);
+                if (visualizeEvery100)
+                    cmdLineOptions.setVisualization((i-5) % 100 == 0);
                 basicTask.reset(cmdLineOptions);
                 basicTask.runOneEpisode();
                 float tempVal = basicTask.getEnvironment().getEvaluationInfo().computeWeightedFitness();

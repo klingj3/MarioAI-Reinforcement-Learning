@@ -365,15 +365,18 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 		float yGroundedChange;
 		yGroundedChange = marioFloatPos[1] - previousGroundedY;
 		int numEnemiesKilled = getKillsTotal - previousKillsTotal;
-		reward +=  xChange*10 + 2*numEnemiesKilled;
+		reward +=  xChange*10 + 5*numEnemiesKilled;
 
 		if (marioStatus < previousStatus){
             reward -= 500; //Punishment for being hurt.
         }
 		if (Math.max(0.00, xChange) > 0 && isMarioOnGround){
-			if (scene[10][9] == -62)
-				reward += 50;
-            reward += 10*Math.max(0.00, yGroundedChange);
+			if (yGroundedChange <= 0) {
+				reward += -10 * Math.max(0.00, yGroundedChange);
+				if (scene[10][9] == -62 || scene[10][9] == -24) {
+					reward += 50;
+				}
+			}
         }
 		if (xChange < 0.1)
             constXChange++;
