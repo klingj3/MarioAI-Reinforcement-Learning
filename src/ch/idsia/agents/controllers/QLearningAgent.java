@@ -85,6 +85,15 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 		return (isObstacle(10, 8, scene)) || (isObstacle(10, 9, scene)) || (isObstacle(10, 7, scene));
 	}
 
+	private boolean softObstacleAbove(byte[][] scene){
+		for (int i = 0; i < 9; i++){
+			if (scene[i][9] == -62){
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/**NUM BUTTONS*/
 	private final int nb = 5;
 	private final int numActions = 12;
@@ -251,8 +260,9 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 		int direction = 0;
 
 		boolean obstacleAhead = obstacleAhead(scene) || scene[9][10] != 0;
+		boolean softObstacle = softObstacleAbove(scene);
 
-		boolean[] arr = {isFire,
+		boolean[] arr = {softObstacle, isFire,
 				enemyInRadius1,
 				enemyInRadius3,
 				enemyInRadius5,
@@ -278,7 +288,7 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 		selectAction(hash);
 
 		if (previousState != -1){
-			reward = getReward(hash, reward, xChange);
+			reward = getReward(hash, reward, xChange, scene);
 		}
 
 
@@ -351,7 +361,7 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 		}
 	}
 
-	private double getReward(int hash, double reward, float xChange) {
+	private double getReward(int hash, double reward, float xChange, byte[][] scene) {
 		float yGroundedChange;
 		yGroundedChange = marioFloatPos[1] - previousGroundedY;
 		int numEnemiesKilled = getKillsTotal - previousKillsTotal;
@@ -361,6 +371,8 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
             reward -= 500; //Punishment for being hurt.
         }
 		if (Math.max(0.00, xChange) > 0 && isMarioOnGround){
+			if (scene[10][9] == -62)
+				reward += 50;
             reward += 10*Math.max(0.00, yGroundedChange);
         }
 		if (xChange < 0.1)
