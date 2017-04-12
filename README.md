@@ -27,6 +27,10 @@ As there is a different kind of block for each 5 by 5 position for each of six t
 
 As testing continued, the input grid was expanded from 3 by 3 to 5 by 5, with Mario at the center, as it led to a significant increase in performance on the higher difficulties at a relatively minimal performance cost.
 
-This neural network was run for 500 generations on ten randomly generated seeds at difficulty levels 0, 5, and 25, with *p* value of 20 and *c* value of 100, as well as *c* value of 15 and *p* value of 5.
+This neural network was run for 500 generations on ten randomly generated seeds at difficulty levels 0, 5, and 25, with *p* value of 20 and *c* value of 100, as well as *c* value of 15 and *p* value of 5
 
-# CONTINUE HERE
+###### Neural Network 1 Results
+![NN1FirstGraph](https://i.imgur.com/jSnzb5s.jpg)
+
+The results of this section generally conformed to expectations for the first 500 generations. The algorithm was most successful on level 0, where on average half the levels (those without tall walls at the end) were completed. Surprisingly, this agent did not kill as many of the enemies as it could have, though this may be in part due to the strong incentives given towards movement in the earlier generations. 
+
