@@ -130,7 +130,7 @@ SARSA is a style of updating state-action values according to the following form
 
 Like QLearning, this algorithm was used for 500 generations of training, both on 10 randomly generated seeds and on seed 0, on level 0 with epsilon 0.3, learning rate 0.2, and discount factor 0.7.
 
-![MultiSarsa](https://i.imgur.com/undefined.jpg)
+![MultiSarsa](https://i.imgur.com/S0IgLOc.png)
 ![SingleSarsa](https://i.imgur.com/UJSftIs.png)
 
  While SARSA and Q-Learning had the very similar maximum value attained by any single generation, their performance differed by about 2500 when evaluated across ten seeds, and about 500 evaluated on a single seed. In addition, SARSA's curve of total average didn't normalize around a single value for about 300 generations.
