@@ -147,7 +147,7 @@ The results in this section generally conform to expectations, with the higher a
 
 The discount factor determines the importance of a potential upcoming action in determining the ultimate value of a state-action pair.
 
-![Discount Factor Values](https://i.imgur.com/undefined.jpg)
+![Discount Factor Values](https://i.imgur.com/gLHwZbs.png)
 
 Unlike the learning rate, the discount factor value here had no impact on the rate of learning increase, or on the general range of values. The discount rate of 0.6 had the best performance, while the discount rate of 0.9 had the worst overall performance.
 
