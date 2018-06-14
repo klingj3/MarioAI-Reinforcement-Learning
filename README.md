@@ -1,3 +1,5 @@
+To run, just run src/scenarios/Main.java.
+
 ## Exercise in Neural Networks and Reinforcement Learning for the Platformer Game
 ### Pt1. Neural Network
 #### Introduction

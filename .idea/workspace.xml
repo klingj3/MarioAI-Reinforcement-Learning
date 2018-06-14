@@ -2,8 +2,24 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="21a0aecb-1c33-4b2d-97e1-9c9bc945c119" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/MarioAI+Benchmark/ch/idsia/scenarios/Main.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/backupparents/parentA.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/backupparents/parentB.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/check.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/copyA.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/MarioAI+Benchmark/ch/idsia/agents/controllers/jk.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/MarioAI+Benchmark/ch/idsia/agents/controllers/parentA.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/MarioAI+Benchmark/ch/idsia/agents/controllers/parentB.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/parentA - Copy.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/parentA.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/parentATest.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/parentB.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/ch/idsia/agents/controllers/jk.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/ch/idsia/agents/controllers/parentA.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/ch/idsia/agents/controllers/parentB.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test.txt" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/MarioAI+Benchmark/ch/idsia/scenarios/Main.class" afterPath="$PROJECT_DIR$/out/production/MarioAI+Benchmark/ch/idsia/scenarios/Main.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ch/idsia/agents/controllers/QLearningAgent.java" afterPath="$PROJECT_DIR$/src/ch/idsia/agents/controllers/QLearningAgent.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ch/idsia/scenarios/Main.java" afterPath="$PROJECT_DIR$/src/ch/idsia/scenarios/Main.java" />
     </list>
@@ -24,12 +40,11 @@
       <file leaf-file-name="QLearningAgent.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ch/idsia/agents/controllers/QLearningAgent.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-253">
-              <caret line="274" column="20" lean-forward="false" selection-start-line="274" selection-start-column="20" selection-end-line="274" selection-end-column="20" />
+            <state relative-caret-position="210">
+              <caret line="359" column="113" lean-forward="false" selection-start-line="359" selection-start-column="113" selection-end-line="359" selection-end-column="113" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#isObstacle#0;class#QLearningAgent#0" expanded="false" />
-                <element signature="method#enemyInRadius#0;class#QLearningAgent#0" expanded="false" />
                 <element signature="method#obstacleAhead#0;class#QLearningAgent#0" expanded="false" />
                 <element signature="method#QLearningAgent#0;class#QLearningAgent#0" expanded="false" />
                 <element signature="method#genericInitializers#0;class#QLearningAgent#0" expanded="false" />
@@ -38,14 +53,34 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="NeuralNetwork2.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ch/idsia/agents/controllers/NeuralNetwork2.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-136">
+              <caret line="88" column="37" lean-forward="false" selection-start-line="88" selection-start-column="37" selection-end-line="88" selection-end-column="37" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ch/idsia/scenarios/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="26">
-              <caret line="65" column="25" lean-forward="true" selection-start-line="65" selection-start-column="25" selection-end-line="65" selection-end-column="25" />
+            <state relative-caret-position="255">
+              <caret line="15" column="13" lean-forward="false" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="17">
+              <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -54,8 +89,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>{</find>
-      <find>= {</find>
       <find>newHm</find>
       <find>previousAction</find>
       <find>numActions =</find>
@@ -68,7 +101,6 @@
       <find>stuck</find>
       <find>numActions</find>
       <find>ychange</find>
-      <find>numActions</find>
       <find>goalAbove</find>
       <find>nb</find>
       <find>reward +=</find>
@@ -81,9 +113,12 @@
       <find>onGround</find>
       <find>getReward</find>
       <find>onGround =</find>
-      <find>onGround =</find>
       <find>SarSA</find>
       <find>enem</find>
+      <find>setVisualization</find>
+      <find>visuali</find>
+      <find>learningrate</find>
+      <find>learningrate =</find>
     </findStrings>
     <replaceStrings>
       <replace>genSize</replace>
@@ -116,13 +151,15 @@
         <option value="$PROJECT_DIR$/src/ch/idsia/agents/controllers/BasicMarioAIAgent.java" />
         <option value="$PROJECT_DIR$/src/ch/idsia/agents/controllers/QLearningAgent.java" />
         <option value="$PROJECT_DIR$/src/ch/idsia/scenarios/Main.java" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="y" value="23" />
-    <option name="width" value="1280" />
-    <option name="height" value="773" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -139,42 +176,83 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="MarioAI" />
+              <option name="myItemId" value="MarioAI-Reinforcement-Learning-and-Neural-Networks" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="MarioAI" />
+              <option name="myItemId" value="MarioAI-Reinforcement-Learning-and-Neural-Networks" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="MarioAI" />
+              <option name="myItemId" value="MarioAI-Reinforcement-Learning-and-Neural-Networks" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="MarioAI" />
+              <option name="myItemId" value="MarioAI-Reinforcement-Learning-and-Neural-Networks" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="python" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="MarioAI" />
+              <option name="myItemId" value="MarioAI-Reinforcement-Learning-and-Neural-Networks" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="MarioAI" />
+              <option name="myItemId" value="MarioAI-Reinforcement-Learning-and-Neural-Networks" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="python" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="competition" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MarioAI-Reinforcement-Learning-and-Neural-Networks" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MarioAI-Reinforcement-Learning-and-Neural-Networks" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="competition" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MarioAI-Reinforcement-Learning-and-Neural-Networks" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MarioAI-Reinforcement-Learning-and-Neural-Networks" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -185,14 +263,18 @@
               <option name="myItemId" value="idsia" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="utils" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="MarioAI" />
+              <option name="myItemId" value="MarioAI-Reinforcement-Learning-and-Neural-Networks" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="MarioAI" />
+              <option name="myItemId" value="MarioAI-Reinforcement-Learning-and-Neural-Networks" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -204,17 +286,17 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="agents" />
+              <option name="myItemId" value="unittests" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="MarioAI" />
+              <option name="myItemId" value="MarioAI-Reinforcement-Learning-and-Neural-Networks" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="MarioAI" />
+              <option name="myItemId" value="MarioAI-Reinforcement-Learning-and-Neural-Networks" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -226,16 +308,55 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="agents" />
+              <option name="myItemId" value="tools" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MarioAI-Reinforcement-Learning-and-Neural-Networks" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MarioAI-Reinforcement-Learning-and-Neural-Networks" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="controllers" />
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="idsia" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scenarios" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MarioAI-Reinforcement-Learning-and-Neural-Networks" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MarioAI-Reinforcement-Learning-and-Neural-Networks" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="idsia" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -711,25 +832,26 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1280" height="773" extended-state="0" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32954547" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32386363" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32346722" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21164773" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21035941" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32977587" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22265625" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14635417" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.0" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -741,7 +863,6 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="true" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -774,7 +895,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/ch/idsia/agents/controllers/QLearningAgent.java</url>
-          <line>83</line>
+          <line>97</line>
           <properties class="ch.idsia.agents.controllers.QLearningAgent" method="obstacleAhead" />
         </line-breakpoint>
       </breakpoints>
@@ -787,20 +908,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/ch/idsia/scenarios/oldscenarios/Evolve.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="39" column="51" lean-forward="true" selection-start-line="39" selection-start-column="51" selection-end-line="39" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/idsia/benchmark/tasks/BasicTask.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="15" column="36" lean-forward="false" selection-start-line="15" selection-start-column="36" selection-end-line="15" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ch/idsia/benchmark/tasks/Task.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
@@ -1075,24 +1182,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/idsia/agents/controllers/NeuralNetwork2.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1290">
-          <caret line="88" column="37" lean-forward="false" selection-start-line="88" selection-start-column="37" selection-end-line="88" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/idsia/agents/controllers/jk.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="401">
-          <caret line="71" column="72" lean-forward="false" selection-start-line="71" selection-start-column="72" selection-end-line="77" selection-end-column="44" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ch/idsia/benchmark/mario/environments/Environment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1985">
@@ -1141,14 +1230,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/check.txt" />
+    <entry file="file://$PROJECT_DIR$/src/ch/idsia/agents/controllers/jk.java" />
+    <entry file="file://$PROJECT_DIR$/src/ch/idsia/agents/controllers/NeuralNetwork2.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-136">
+          <caret line="88" column="37" lean-forward="false" selection-start-line="88" selection-start-column="37" selection-end-line="88" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/ch/idsia/agents/controllers/QLearningAgent.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-253">
-          <caret line="274" column="20" lean-forward="false" selection-start-line="274" selection-start-column="20" selection-end-line="274" selection-end-column="20" />
+        <state relative-caret-position="210">
+          <caret line="359" column="113" lean-forward="false" selection-start-line="359" selection-start-column="113" selection-end-line="359" selection-end-column="113" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#isObstacle#0;class#QLearningAgent#0" expanded="false" />
-            <element signature="method#enemyInRadius#0;class#QLearningAgent#0" expanded="false" />
             <element signature="method#obstacleAhead#0;class#QLearningAgent#0" expanded="false" />
             <element signature="method#QLearningAgent#0;class#QLearningAgent#0" expanded="false" />
             <element signature="method#genericInitializers#0;class#QLearningAgent#0" expanded="false" />
@@ -1158,11 +1256,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ch/idsia/scenarios/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="26">
-          <caret line="65" column="25" lean-forward="true" selection-start-line="65" selection-start-column="25" selection-end-line="65" selection-end-column="25" />
+        <state relative-caret-position="255">
+          <caret line="15" column="13" lean-forward="false" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>

@@ -6,6 +6,7 @@ import ch.idsia.benchmark.mario.environments.Environment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,33 +18,47 @@ import java.util.HashMap;
 
 public class QLearningAgent extends BasicMarioAIAgent implements Agent
 {
-	boolean qLearning;
-	boolean sarsa;
+	private boolean qLearning;
+	private boolean sarsa;
+	private boolean stuck;
 
-	HashMap updatingHM; //
-	HashMap origHM;
+	private HashMap updatingHM; //
+	private HashMap origHM;
 
-	double epsilon;
-	double learningRate;
-	double discountFactor;
-	double previousReward;
+	private double epsilon;
+	private double learningRate;
+	private double discountFactor;
+	private double previousReward;
 
-	int previousState;
-	int previousKillsTotal;
-	int currAction;
-	int constXChange;
-	int previousStatus;
-	int previousAction;
+	private int previousState;
+	private int previousKillsTotal;
+	private int currAction;
+	private int constXChange;
+	private int previousStatus;
+	private int previousAction;
 
-	int randomCount;
-	int totalCount;
+	private int randomCount;
+	private int totalCount;
+
+	private float previousX;
+	private float previousY;
+	private float previousGroundedY;
 
 
-	float previousX;
-	float previousY;
-	float previousGroundedY;
-
-	boolean stuck;
+	private static final Map<Integer, String> actions = new HashMap<Integer, String>(){{
+			put(0, "000000");
+			put(1, "100000");
+			put(2, "100100");
+			put(3, "100010");
+			put(4, "010000");
+			put(5, "010010");
+			put(6, "010100");
+			put(7, "001000");
+			put(8, "000100");
+			put(9, "000010");
+			put(10, "010110");
+			put(11, "100110");
+	}};
 
 	// 0 			 = nothing
 	//-60, -24, -85  = can't pass through
@@ -59,7 +74,6 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 	private boolean isObstacle(int y, int x, byte[][] scene){
 		return (scene[x][y] == -60 || scene[x][y] == -85 || scene[x][y] == -24);
 	}
-
 
 	private boolean isGoal(int y, int x, byte[][] scene){
 		return (scene[x][y] == 2 || scene[x][y] == 3);
@@ -108,7 +122,7 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 
 	public QLearningAgent(String learningType)
 	{
-		super("jk");
+		super("John Klingelhofer");
 
 		if (learningType.equals("SARSA")){
 			System.out.println("Sarsa Performance");
@@ -251,12 +265,8 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 
 		byte[][] scene = mergedObservation;
 
-		boolean enemyInRadius1 = enemyInRadius(1, scene);
-		boolean enemyInRadius3 = enemyInRadius(3, scene);
-		boolean enemyInRadius5 = enemyInRadius(5, scene);
 		boolean onPipe = scene[10][9] == -85;
 		boolean isFire = marioStatus == 2;
-		int direction = 0;
 
 		boolean obstacleAhead = obstacleAhead(scene) || scene[9][10] != 0;
 		boolean softObstacle = softObstacleAbove(scene);
@@ -265,9 +275,9 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
         boolean[] arr = {
                 softObstacle,
                 isFire,
-				enemyInRadius1,
-				enemyInRadius3,
-				enemyInRadius5,
+				enemyInRadius(1, scene),
+				enemyInRadius(3, scene),
+				enemyInRadius(5, scene),
 				obstacleAhead,
 				stuck,
 				onGround,
@@ -280,7 +290,7 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 		double reward = 0;
 		float xChange =  marioFloatPos[0] - previousX;
 		float yChange = marioFloatPos[1] - previousY;
-		direction = speedToDirection(xChange, yChange);
+		int direction = speedToDirection(xChange, yChange);
 		hash += direction;
 		hash *= 10;
 		hash += distanceToClosestEnemy(scene);
@@ -290,10 +300,8 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 		selectAction(hash);
 
 		if (previousState != -1){
-			reward = getReward(hash, reward, xChange, scene, onGround);
+			reward = getReward(hash, reward, xChange, scene, onGround, previousY);
 		}
-
-
 
 		previousAction = currAction;
 		previousReward = reward;
@@ -307,21 +315,7 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 		if (currAction == -1){
 			currAction = (int)(Math.random()*numActions);
 		}
-		// Left = 0 |  Right = 1  | Down = 2 | Jump = 3 | Speed = 4 | Up = 5
-		if (currAction == 0){return s2ba("000000");}
-		if (currAction == 1){return s2ba("100000");}
-		if (currAction == 2){return s2ba("100100");}
-		if (currAction == 3){return s2ba("100010");}
-		if (currAction == 4){return s2ba("010000");}
-		if (currAction == 5){return s2ba("010010");}
-		if (currAction == 6){return s2ba("010100");}
-		if (currAction == 7){return s2ba("001000");}
-		if (currAction == 8){return s2ba("000100");}
-		if (currAction == 9){return s2ba("000010");}
-		if (currAction == 10){return s2ba("010110");}
-		if (currAction == 11){return s2ba("100110");}
-
-		return action;
+		return s2ba(actions.get(currAction));
 	}
 
 	private void selectAction(int hash) {
@@ -363,7 +357,7 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 		}
 	}
 
-	private double getReward(int hash, double reward, float xChange, byte[][] scene, boolean onGround) {
+	private double getReward(int hash, double reward, float xChange, byte[][] scene, boolean onGround, float blah) {
 		float yGroundedChange;
 		yGroundedChange = marioFloatPos[1] - previousGroundedY;
 		int numEnemiesKilled = getKillsTotal - previousKillsTotal;
@@ -375,7 +369,7 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 		if (marioStatus < previousStatus){
             reward -= 500; //Punishment for being hurt.
         }
-		if (Math.max(0.00, xChange) > 0 && onGround){
+		if (xChange > 0 && onGround){
 			if (yGroundedChange < 0) {
 			    double oldReward = reward;
 				if (scene[10][9] != -60 || scene[11][9] != -60) {
@@ -384,6 +378,8 @@ public class QLearningAgent extends BasicMarioAIAgent implements Agent
 				}
 			}
         }
+        // Add a punishment for useless jumps.
+
 		if (xChange < 0.1)
             constXChange++;
         else

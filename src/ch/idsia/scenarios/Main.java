@@ -12,6 +12,8 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+// Comment below refers to just the basic structure of this file, all content as well as referenced QLearningAgent was done
+// by John Klingelhofer
 /**
  * Created by IntelliJ IDEA. User: Sergey Karakovskiy, sergey at idsia dot ch Date: Mar 17, 2010 Time: 8:28:00 AM
  * Package: ch.idsia.scenarios
@@ -60,14 +62,14 @@ public final class Main {
         final CmdLineOptions cmdLineOptions = new CmdLineOptions(argsString);
         final BasicTask basicTask = new BasicTask(cmdLineOptions);
 
-        cmdLineOptions.setVisualization(false);
+        cmdLineOptions.setVisualization(true);
 
         //MODIFY THESE FOR EXPERIMENTAITON
         int numSeeds = 1;
         double epsilon = 0.3;
-        double learningRate = 0.2;
-        double discountFactor = 0.7;
-        boolean visualizeEvery200 = true;
+        double learningRate = 0.1;
+        double discountFactor = 0.6;
+        boolean visualizeOccasionally = true;
         String learningType = "QLEARNING"; //Must be SARSA or QLEARNING
         //END OF MODIFYABLE!
 
@@ -83,7 +85,7 @@ public final class Main {
         Integer seeds[] = new Integer[numSeeds];
         for (int i = 0; i < numSeeds; i++){
             if (numSeeds == 1)
-                seeds[i] = 0;
+                seeds[i] = 6;
             else
                 seeds[i] = (int)(Math.random()*Integer.MAX_VALUE);
         }
@@ -96,8 +98,12 @@ public final class Main {
             generationAverages[i] = 0;
             for (int s = 0; s < numSeeds; s++) {
                 cmdLineOptions.setLevelRandSeed(seeds[s]);
-                if (visualizeEvery200)
-                    cmdLineOptions.setVisualization((i+1) % 200 == 0);
+                if (visualizeOccasionally && (i+1)%100 == 0){
+                    cmdLineOptions.setVisualization(true);
+                }
+                else{
+                    cmdLineOptions.setVisualization(false);
+                }
                 basicTask.reset(cmdLineOptions);
                 basicTask.runOneEpisode();
                 float tempVal = basicTask.getEnvironment().getEvaluationInfo().computeWeightedFitness();
